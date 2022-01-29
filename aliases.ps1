@@ -10,13 +10,14 @@ function .. { z .. }
 function ... { z ..\.. }
 function .... { z ..\..\.. }
 # ---------------------------------------------------------
-function dt { z .. }
+function dt { z ~\Desktop }
 function docs { z ~\Documents }
 function dl { z D:\Downloads }
 function cdl { z ~\Downloads }
 function cde { z D:\Code }
 
 # Get file info
+# TODO: make this work
 function which($name) { Get-Command $name -ErrorAction SilentlyContinue | Select-Object Definition }
 
 # Time the speed of commands

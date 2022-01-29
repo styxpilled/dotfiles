@@ -11,3 +11,5 @@ For ($i=0; $i -lt $profileFiles.Length; $i++) {
 Remove-Variable componentDir
 Remove-Variable profileDir
 Remove-Variable profileFiles
+
+Clear-Host

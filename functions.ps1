@@ -1,3 +1,5 @@
+# Reload Powershell
+# TODO: Make this work
 function Reload-Powershell {
   $newProcess = new-object System.Diagnostics.ProcessStartInfo "PowerShell";
   $newProcess.Arguments = "-nologo";
@@ -5,6 +7,8 @@ function Reload-Powershell {
   exit
 }
 
+# Empty the recycle bin
+# TODO: Make this work
 function Empty-RecycleBin {
   $RecBin = (New-Object -ComObject Shell.Application).Namespace(0xA)
   $RecBin.Items() | %{Remove-Item $_.Path -Recurse -Confirm:$false}
