@@ -38,3 +38,23 @@ function Get-DiskUsage([string] $path=(Get-Location).Path) {
         ).Sum `
         1
 }
+
+function CreateImageVariants([string] $fileName) {
+  $baseName = $fileName.Substring(0,$fileName.LastIndexOf('.')).split('\')[-1]
+  $extension = $fileName.Substring($fileName.LastIndexOf('.'), $fileName.length - $fileName.LastIndexOf('.'))
+  $size = 8
+  $tempsize = $size
+  $odd = 0
+  while($size -lt 128) {
+    if ($odd) {
+      $tempsize = $size + ($size / 2)
+    }
+    else {
+      $tempsize = $size * 2
+      $size = $size * 2
+    }
+    $odd = !$odd
+    Write-Host "$baseName$tempsize$extension"
+    magick convert $fileName -resize $tempsize "$baseName$tempsize$extension"
+  }
+}
