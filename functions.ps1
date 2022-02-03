@@ -58,3 +58,32 @@ function CreateImageVariants([string] $fileName) {
     magick convert $fileName -resize $tempsize "$baseName$tempsize$extension"
   }
 }
+
+function howto([string] $question) {
+  $answers = @{
+    fixcommitdate =
+    @('fix the commit date','git commit --amend --no-edit --date "Sat 01 Jan 2020 20:20:20 UTC"');
+    fixcommitmessage =
+    @('fix the commit message','git commit --amend --no-edit --message "Fix commit message"');
+    makesveltekit = 
+    @('make a sveltekit project','npm init @svelte-add/kit@latest');
+    makestyx =
+    @('make a styx project','npx degit styxpilled/styx-template');
+  }
+  if ($question -eq "") {
+    Write-Host "Usage: howto <question>" -ForegroundColor Green
+    Write-Host "Available questions: " -ForegroundColor Green
+    Write-Output $answers
+  }
+  else {
+    if ($answers.Contains($question)) {
+      Write-Host "How to $($answers[$question][0]):" -ForegroundColor Green
+      Write-Host $answers[$question][1] -ForegroundColor Green
+      Set-Clipboard $answers[$question][1]
+    }
+    else {
+      Write-Host "Invalid question. Available questions: " -ForegroundColor Red
+      Write-Output $answers
+    }
+  }
+}
