@@ -17,7 +17,6 @@ function cdl { z ~\Downloads }
 function cde { z D:\Code }
 
 # Get file info
-# TODO: make this work
 function which($name) { Get-Command $name -ErrorAction SilentlyContinue | Select-Object Definition }
 
 # Time the speed of commands
@@ -50,3 +49,12 @@ Set-Alias ls PowerColorLS
 
 # Neofetch but worse
 Set-Alias winfetch "pwshfetch-test-1"
+
+# Check public IP
+Set-Alias wip whatsmyip
+
+# Check the weather, long form
+Set-Alias wtw whatstheweather
+
+# Check the weather, short form
+Set-Alias wtws whatstheweathershort

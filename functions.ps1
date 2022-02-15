@@ -59,8 +59,24 @@ function CreateImageVariants([string] $fileName) {
   }
 }
 
+function whatsmyip {
+  (Invoke-WebRequest ifconfig.me/ip).Content.Trim()
+}
+
+function whatstheweather ([string] $city) {
+  $url = "wttr.in/" + $city
+  (Invoke-WebRequest $url).Content.Trim()
+}
+
+function whatstheweathershort ([string] $city) {
+  $url = "wttr.in/" + $city + "?format=3"
+  (Invoke-WebRequest $url).Content.Trim()
+}
+
 function howto([string] $question) {
   $answers = @{
+    addfiletogit =
+    @('add a file to the git repository','git add package.json');
     fixcommitdate =
     @('fix the commit date','git commit --amend --no-edit --date "Sat 01 Jan 2020 20:20:20 UTC"');
     fixcommitmessage =
@@ -69,6 +85,8 @@ function howto([string] $question) {
     @('make a sveltekit project','npm init @svelte-add/kit@latest');
     makestyx =
     @('make a styx project','npx degit styxpilled/styx-template');
+    commitizencommit =
+    @('make a commitizen commit','npx cz');
   }
   if ($question -eq "") {
     Write-Host "Usage: howto <question>" -ForegroundColor Green
