@@ -78,7 +78,7 @@ function howto([string] $question) {
     addfiletogit =
     @('add a file to the git repository','git add package.json');
     fixcommitdate =
-    @('fix the commit date','git commit --amend --no-edit --date "Sat 01 Jan 2020 20:20:20 UTC"');
+    @('fix the commit date',"git commit --amend --no-edit --date `"$(Get-Date -Format 'ddd MM MMM yyyy HH:mm:ss')`"");
     fixcommitmessage =
     @('fix the commit message','git commit --amend --no-edit --message "Fix commit message"');
     makesveltekit = 
