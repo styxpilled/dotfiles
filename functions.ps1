@@ -105,3 +105,26 @@ function howto([string] $question) {
     }
   }
 }
+
+function conventionalcommits() {
+  Write-Host "feat" -ForegroundColor Green -NoNewline
+  Write-Host ": Commits, that adds a new feature"
+  Write-Host "fix" -ForegroundColor Green -NoNewline
+  Write-Host ": Commits, that fixes a bug"
+  Write-Host "refactor" -ForegroundColor Green -NoNewline
+  Write-Host ": Commits, that rewrite/restructure your code, however does not change any behaviour"
+  Write-Host "perf" -ForegroundColor Green -NoNewline
+  Write-Host ": Commits are special refactor commits, that improves performance"
+  Write-Host "style" -ForegroundColor Green -NoNewline
+  Write-Host ": Commits, that do not affect the meaning (white-space, formatting, missing semi-colons, etc)"
+  Write-Host "test" -ForegroundColor Green -NoNewline
+  Write-Host ": Commits, that add missing tests or correcting existing tests"
+  Write-Host "docs" -ForegroundColor Green -NoNewline
+  Write-Host ": Commits, that affect documentation only"
+  Write-Host "build" -ForegroundColor Green -NoNewline
+  Write-Host ": Commits, that affect build components like build tool, ci pipeline, dependencies, project version"
+  Write-Host "ops" -ForegroundColor Green -NoNewline
+  Write-Host ": Commits, that affect operational components like infrastructure, deployment, backup, recovery"
+  Write-Host "chore" -ForegroundColor Green -NoNewline
+  Write-Host ": Miscellaneous commits e.g. modifying .gitignore"
+}
