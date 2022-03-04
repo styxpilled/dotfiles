@@ -73,7 +73,16 @@ function whatstheweathershort ([string] $city) {
   (Invoke-WebRequest $url).Content.Trim()
 }
 
-function howto([string] $question) {
+function howto(
+  [ValidateSet(
+    'addfiletogit',
+    'fixcommitdate',
+    'fixcommitmessage',
+    'makesveltekit',
+    'makestyx',
+    'commitizencommit',
+    $null 
+  )] $question) {
   $answers = @{
     addfiletogit =
     @('add a file to the git repository','git add package.json');
@@ -88,7 +97,7 @@ function howto([string] $question) {
     commitizencommit =
     @('make a commitizen commit','npx cz');
   }
-  if ($question -eq "") {
+  if ($question -eq $null) {
     Write-Host "Usage: howto <question>" -ForegroundColor Green
     Write-Host "Available questions: " -ForegroundColor Green
     Write-Output $answers
