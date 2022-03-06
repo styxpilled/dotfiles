@@ -87,7 +87,7 @@ function howto(
     addfiletogit =
     @('add a file to the git repository','git add package.json');
     fixcommitdate =
-    @('fix the commit date',"git commit --amend --no-edit --date `"$(Get-Date -Format 'ddd MM MMM yyyy HH:mm:ss')`"");
+    @('fix the commit date',"git commit --amend --no-edit --date `"$(Get-Date -Format 'ddd dd MMM yyyy HH:mm:ss K')`"");
     fixcommitmessage =
     @('fix the commit message','git commit --amend --no-edit --message "Fix commit message"');
     makesveltekit = 
