@@ -88,7 +88,7 @@ function howto(
     addfiletogit =
     @('add a file to the git repository','git add package.json');
     fixcommitdate =
-    @('fix the commit date',"git commit --amend --no-edit --date $((Get-Date).AddDays($(iif [bool]($param -as [int]) $param 0)).ToString('ddd dd MMM yyyy HH:mm:ss K'))");
+    @('fix the commit date',"git commit --amend --no-edit --date `"$((Get-Date).AddDays($(iif [bool]($param -as [int]) $param 0)).ToString('ddd dd MMM yyyy HH:mm:ss K'))`"");
     fixcommitmessage =
     @('fix the commit message',"git commit --amend --no-edit --message `"$(iif $param $param 'Commit message here')`"");
     makesveltekit = 
