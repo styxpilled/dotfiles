@@ -143,3 +143,34 @@ function iif($if, $IfTrue, $IfFalse) {
   if ($if) {If ($IfTrue -is "ScriptBlock") {&$IfTrue} Else {$IfTrue}}
   Else {If ($IfFalse -is "ScriptBlock") {&$IfFalse} Else {$IfFalse}}
 }
+
+function getlicense(
+  [ValidateSet(
+    'mit',
+    'apache',
+    'gplv3',
+    'lgplv3',
+    $null 
+  )] $license) {
+$licenses = @{
+    mit = "./licenses/MIT";
+    apache = "./licenses/APACHE";
+    gplv3 = "./licenses/GPLv3";
+    lgplv3 = "./licenses/LGPLv3";
+};
+  if ($license -eq $null) {
+    Write-Host "Usage: license <license>" -ForegroundColor Green
+    Write-Host "Available licenses: " -ForegroundColor Green
+    Write-Output $licenses
+  }
+  else {
+    $license_file = $licenses[$license]
+    if (-not (Test-Path $license_file)) {
+      Write-Host "License $license not found" -ForegroundColor Red
+    }
+    else {
+      Write-Output "Copying license $license to ./LICENSE"
+      Copy-Item $license_file ./LICENSE -Force
+    }
+  }
+}
