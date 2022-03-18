@@ -150,6 +150,9 @@ function getlicense(
     'apache',
     'gplv3',
     'lgplv3',
+    'mplv2',
+    'bsd2',
+    'bsd3',
     $null 
   )] $license) {
 $licenses = @{
@@ -157,6 +160,9 @@ $licenses = @{
     apache = "./licenses/APACHE";
     gplv3 = "./licenses/GPLv3";
     lgplv3 = "./licenses/LGPLv3";
+    mplv2 = "./licenses/MPLv2";
+    bsd2 = "./licenses/BSD2-CLAUSE";
+    bsd3 = "./licenses/BSD3-CLAUSE";
 };
   if ($license -eq $null) {
     Write-Host "Usage: license <license>" -ForegroundColor Green
