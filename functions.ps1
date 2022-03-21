@@ -73,6 +73,10 @@ function whatstheweathershort ([string] $city) {
   (Invoke-WebRequest $url).Content.Trim()
 }
 
+function videotogif([string] $video, [string] $gif = $video.Substring(0, $video.LastIndexOf('.'))) {
+  ffmpeg -i $video -vf "fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 "$gif.gif"
+}
+
 function howto(
   [ValidateSet(
     'addfiletogit',
