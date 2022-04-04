@@ -7,6 +7,10 @@ function Reload-Powershell {
   exit
 }
 
+function close {
+  exit
+}
+
 # Empty the recycle bin
 # TODO: Make this work
 function Empty-RecycleBin {
