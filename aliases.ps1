@@ -25,15 +25,6 @@ Set-Alias time Measure-Command
 # Create a new directory and enter it
 Set-Alias mkd CreateAndSet-Directory
 
-# Determine size of a file or total size of a directory
-Set-Alias fs Get-DiskUsage
-
-# Empty the Recycle Bin on all drives
-Set-Alias emptytrash Empty-RecycleBin
-
-# Reload the shell
-Set-Alias reload Reload-Powershell
-
 # Create a new file
 Set-Alias touch ni
 
