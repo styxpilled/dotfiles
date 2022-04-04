@@ -19,6 +19,8 @@ function cde { z D:\Code }
 # Get file info
 function which($name) { Get-Command $name -ErrorAction SilentlyContinue | Select-Object Definition }
 
+Set-Alias close ClosePowerShell
+
 # Time the speed of commands
 Set-Alias time Measure-Command
 
