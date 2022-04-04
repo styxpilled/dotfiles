@@ -25,6 +25,11 @@ function CreateImageVariants([string] $fileName) {
   }
 }
 
+# Git push origin main
+function GitPushOriginMain {
+  git push origin main
+}
+
 function whatsmyip {
   (Invoke-WebRequest ifconfig.me/ip).Content.Trim()
 }

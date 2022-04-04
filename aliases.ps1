@@ -19,7 +19,11 @@ function cde { z D:\Code }
 # Get file info
 function which($name) { Get-Command $name -ErrorAction SilentlyContinue | Select-Object Definition }
 
+# Close Powershell
 Set-Alias close ClosePowerShell
+
+# Git Push Origin Main
+Set-Alias gpom GitPushOriginMain
 
 # Time the speed of commands
 Set-Alias time Measure-Command
