@@ -21,6 +21,7 @@ function which($name) { Get-Command $name -ErrorAction SilentlyContinue | Select
 
 # Close Powershell
 Set-Alias close ClosePowerShell
+Set-Alias quit ClosePowerShell
 
 # Git Push Origin Main
 Set-Alias gpom GitPushOriginMain
@@ -29,7 +30,7 @@ Set-Alias gpom GitPushOriginMain
 Set-Alias time Measure-Command
 
 # Create a new directory and enter it
-Set-Alias mkd CreateAndSet-Directory
+Set-Alias mkd CreateAndSetDirectory
 
 # Create a new file
 Set-Alias touch ni

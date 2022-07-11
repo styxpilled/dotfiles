@@ -3,7 +3,7 @@ function ClosePowerShell {
 }
 
 # Create a new directory and enter it
-function CreateAndSet-Directory([String] $path) { New-Item $path -ItemType Directory -ErrorAction SilentlyContinue; Set-Location $path }
+function CreateAndSetDirectory([String] $path) { New-Item $path -ItemType Directory -ErrorAction SilentlyContinue; Set-Location $path }
 
 function CreateImageVariants([string] $fileName) {
   $baseName = $fileName.Substring(0, $fileName.LastIndexOf('.')).split('\')[-1]
