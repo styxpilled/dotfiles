@@ -3,15 +3,15 @@ function ClosePowerShell {
 }
 
 # Create a new directory and enter it
-function CreateAndSet-Directory([String] $path) { New-Item $path -ItemType Directory -ErrorAction SilentlyContinue; Set-Location $path}
+function CreateAndSet-Directory([String] $path) { New-Item $path -ItemType Directory -ErrorAction SilentlyContinue; Set-Location $path }
 
 function CreateImageVariants([string] $fileName) {
-  $baseName = $fileName.Substring(0,$fileName.LastIndexOf('.')).split('\')[-1]
+  $baseName = $fileName.Substring(0, $fileName.LastIndexOf('.')).split('\')[-1]
   $extension = $fileName.Substring($fileName.LastIndexOf('.'), $fileName.length - $fileName.LastIndexOf('.'))
   $size = 8
   $tempsize = $size
   $odd = 0
-  while($size -lt 128) {
+  while ($size -lt 128) {
     if ($odd) {
       $tempsize = $size + ($size / 2)
     }
@@ -48,6 +48,14 @@ function videotogif([string] $video, [string] $gif = $video.Substring(0, $video.
   ffmpeg -i $video -vf "fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 "$gif.gif"
 }
 
+function GetFilesMatchingRegex([string] $reg) {
+  Get-ChildItem $Path | Where-Object { $_.Name -Match $reg }
+}
+
+function RemoveFilesMatchingRegex([string] $reg) {
+  Get-ChildItem $Path | Where-Object { $_.Name -Match $reg } | Remove-Item
+}
+
 function howto(
   [ValidateSet(
     'addfiletogit',
@@ -60,18 +68,18 @@ function howto(
   )] $question,
   [string] $param) {
   $answers = @{
-    addfiletogit =
-    @('add a file to the git repository','git add package.json');
-    fixcommitdate =
-    @('fix the commit date',"git commit --amend --no-edit --date `"$((Get-Date).AddDays($(iif [bool]($param -as [int]) $param 0)).ToString('ddd dd MMM yyyy HH:mm:ss K'))`"");
+    addfiletogit     =
+    @('add a file to the git repository', 'git add package.json');
+    fixcommitdate    =
+    @('fix the commit date', "git commit --amend --no-edit --date `"$((Get-Date).AddDays($(iif [bool]($param -as [int]) $param 0)).ToString('ddd dd MMM yyyy HH:mm:ss K'))`"");
     fixcommitmessage =
-    @('fix the commit message',"git commit --amend --no-edit --message `"$(iif $param $param 'Commit message here')`"");
-    makesveltekit = 
-    @('make a sveltekit project','npm init @svelte-add/kit@latest');
-    makestyx =
-    @('make a styx project','npx degit styxpilled/styx-template');
+    @('fix the commit message', "git commit --amend --no-edit --message `"$(iif $param $param 'Commit message here')`"");
+    makesveltekit    = 
+    @('make a sveltekit project', 'npm init @svelte-add/kit@latest');
+    makestyx         =
+    @('make a styx project', 'npx degit styxpilled/styx-template');
     commitizencommit =
-    @('make a commitizen commit','npx cz');
+    @('make a commitizen commit', 'npx cz');
   }
   if ($question -eq $null) {
     Write-Host "Usage: howto <question>" -ForegroundColor Green
@@ -115,8 +123,8 @@ function conventionalcommits() {
 }
 
 function iif($if, $IfTrue, $IfFalse) {
-  if ($if) {If ($IfTrue -is "ScriptBlock") {&$IfTrue} Else {$IfTrue}}
-  Else {If ($IfFalse -is "ScriptBlock") {&$IfFalse} Else {$IfFalse}}
+  if ($if) { If ($IfTrue -is "ScriptBlock") { &$IfTrue } Else { $IfTrue } }
+  Else { If ($IfFalse -is "ScriptBlock") { &$IfFalse } Else { $IfFalse } }
 }
 
 function getlicense(
@@ -130,15 +138,15 @@ function getlicense(
     'bsd3',
     $null 
   )] $license) {
-$licenses = @{
-    mit = "./licenses/MIT";
+  $licenses = @{
+    mit    = "./licenses/MIT";
     apache = "./licenses/APACHE";
-    gplv3 = "./licenses/GPLv3";
+    gplv3  = "./licenses/GPLv3";
     lgplv3 = "./licenses/LGPLv3";
-    mplv2 = "./licenses/MPLv2";
-    bsd2 = "./licenses/BSD2-CLAUSE";
-    bsd3 = "./licenses/BSD3-CLAUSE";
-};
+    mplv2  = "./licenses/MPLv2";
+    bsd2   = "./licenses/BSD2-CLAUSE";
+    bsd3   = "./licenses/BSD3-CLAUSE";
+  };
   if ($license -eq $null) {
     Write-Host "Usage: license <license>" -ForegroundColor Green
     Write-Host "Available licenses: " -ForegroundColor Green
