@@ -163,3 +163,14 @@ function getlicense(
     }
   }
 }
+
+function KillProcessesByRegex([string] $reg) {
+  Get-Process |
+  Where-Object { $_.ProcessName -match $reg } |
+  Stop-Process -Force
+}
+
+function fuckadobe() {
+  KillProcessesByRegex "Adobe|Creative Cloud|CCLibrary|CCXProcess|CoreSync"
+  Write-Output "Killed All Background Adobe Processes" -ForegroundColor Green
+}
