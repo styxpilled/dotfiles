@@ -116,6 +116,8 @@ function conventionalcommits() {
   Write-Host ": Commits, that affect documentation only"
   Write-Host "build" -ForegroundColor Green -NoNewline
   Write-Host ": Commits, that affect build components like build tool, ci pipeline, dependencies, project version"
+  Write-Host "build(deps)" -ForegroundColor Green -NoNewline
+  Write-Host ": Commits, that bump the dependencies"
   Write-Host "ops" -ForegroundColor Green -NoNewline
   Write-Host ": Commits, that affect operational components like infrastructure, deployment, backup, recovery"
   Write-Host "chore" -ForegroundColor Green -NoNewline
