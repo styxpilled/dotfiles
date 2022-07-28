@@ -81,12 +81,7 @@ function howto(
     commitizencommit =
     @('make a commitizen commit', 'npx cz');
   }
-  if ($question -eq $null) {
-    Write-Host "Usage: howto <question>" -ForegroundColor Green
-    Write-Host "Available questions: " -ForegroundColor Green
-    Write-Output $answers
-  }
-  else {
+  if ($question) {
     if ($answers.Contains($question)) {
       Write-Host "How to $($answers[$question][0]):" -ForegroundColor Green
       Write-Host $answers[$question][1] -ForegroundColor Green
@@ -95,6 +90,14 @@ function howto(
     else {
       Write-Host "Invalid question. Available questions: " -ForegroundColor Red
       Write-Output $answers
+    }
+  }
+  else {
+    Write-Host "Usage: howto <question>" -ForegroundColor Yellow
+    Write-Host "Available questions: " -ForegroundColor Yellow
+    foreach ($h in $answers.GetEnumerator()) {
+      Write-Host "$($h.Name):$(' ' * (20 - $h.Name.ToString().Length))" -ForegroundColor Green -NoNewline
+      Write-Host "$($h.Value[0])"
     }
   }
 }
@@ -149,12 +152,7 @@ function getlicense(
     bsd2   = "./licenses/BSD2-CLAUSE";
     bsd3   = "./licenses/BSD3-CLAUSE";
   };
-  if ($license -eq $null) {
-    Write-Host "Usage: license <license>" -ForegroundColor Green
-    Write-Host "Available licenses: " -ForegroundColor Green
-    Write-Output $licenses
-  }
-  else {
+  if ($license) {
     $license_file = $licenses[$license]
     if (-not (Test-Path $license_file)) {
       Write-Host "License $license not found" -ForegroundColor Red
@@ -163,6 +161,11 @@ function getlicense(
       Write-Output "Copying license $license to ./LICENSE"
       Copy-Item $license_file ./LICENSE -Force
     }
+  }
+  else {
+    Write-Host "Usage: license <license>" -ForegroundColor Green
+    Write-Host "Available licenses: " -ForegroundColor Green
+    Write-Output $licenses
   }
 }
 
