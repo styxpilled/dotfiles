@@ -12,9 +12,10 @@ function .... { z ..\..\.. }
 # ---------------------------------------------------------
 function dt { z ~\Desktop }
 function docs { z ~\Documents }
-function dl { z D:\Downloads }
+function dwn { z D:\dwn }
 function cdl { z ~\Downloads }
-function cde { z D:\Code }
+# !DEPRECIATED
+# function cde { z D:\Code }
 
 # Get file info
 function which($name) { Get-Command $name -ErrorAction SilentlyContinue | Select-Object Definition }
