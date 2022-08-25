@@ -144,16 +144,16 @@ function getlicense(
     $null 
   )] $license) {
   $licenses = @{
-    mit    = "./licenses/MIT";
-    apache = "./licenses/APACHE";
-    gplv3  = "./licenses/GPLv3";
-    lgplv3 = "./licenses/LGPLv3";
-    mplv2  = "./licenses/MPLv2";
-    bsd2   = "./licenses/BSD2-CLAUSE";
-    bsd3   = "./licenses/BSD3-CLAUSE";
+    mit    = "MIT";
+    apache = "APACHE";
+    gplv3  = "GPLv3";
+    lgplv3 = "LGPLv3";
+    mplv2  = "MPLv2";
+    bsd2   = "BSD2-CLAUSE";
+    bsd3   = "BSD3-CLAUSE";
   };
   if ($license) {
-    $license_file = $licenses[$license]
+    $license_file = Join-Path $dotfiles "licenses" $licenses[$license]
     if (-not (Test-Path $license_file)) {
       Write-Host "License $license not found" -ForegroundColor Red
     }
