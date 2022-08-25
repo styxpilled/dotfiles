@@ -177,5 +177,5 @@ function KillProcessesByRegex([string] $reg) {
 
 function fuckadobe() {
   KillProcessesByRegex "Adobe|Creative Cloud|CCLibrary|CCXProcess|CoreSync"
-  Write-Output "Killed All Background Adobe Processes" -ForegroundColor Green
+  Write-Host "Killed All Background Adobe Processes" -ForegroundColor Green
 }
