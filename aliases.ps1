@@ -42,10 +42,6 @@ Set-Alias open ii
 # Clear the screen
 Set-Alias c clear
 
-# Use PowerColorLS for LS
-Remove-Alias ls -Force 
-Set-Alias ls PowerColorLS
-
 # Neofetch but worse
 Set-Alias winfetch "pwshfetch-test-1"
 
