@@ -139,33 +139,24 @@ function getlicense(
     'gplv3',
     'lgplv3',
     'mplv2',
-    'bsd2',
-    'bsd3',
+    'bsd2-clause',
+    'bsd3-clause',
     $null 
   )] $license) {
-  $licenses = @{
-    mit    = "MIT";
-    apache = "APACHE";
-    gplv3  = "GPLv3";
-    lgplv3 = "LGPLv3";
-    mplv2  = "MPLv2";
-    bsd2   = "BSD2-CLAUSE";
-    bsd3   = "BSD3-CLAUSE";
-  };
   if ($license) {
-    $license_file = Join-Path $dotfiles "licenses" $licenses[$license]
-    if (-not (Test-Path $license_file)) {
-      Write-Host "License $license not found" -ForegroundColor Red
+    $license_file = Join-Path $dotfiles "licenses" $license
+    if (Test-Path $license_file) {
+      Write-Host "Copying license $($license.ToUpper()) to ./LICENSE" -ForegroundColor Green
+      Copy-Item $license_file ./LICENSE -Force
     }
     else {
-      Write-Output "Copying license $license to ./LICENSE"
-      Copy-Item $license_file ./LICENSE -Force
+      Write-Host "License $($license.ToUpper()) not found" -ForegroundColor Red
     }
   }
   else {
     Write-Host "Usage: license <license>" -ForegroundColor Green
     Write-Host "Available licenses: " -ForegroundColor Green
-    Write-Output $licenses
+    Write-Host (Get-Variable license).Attributes.ValidValues -ForegroundColor Green
   }
 }
 
