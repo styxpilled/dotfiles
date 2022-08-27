@@ -14,8 +14,6 @@ function dt { z ~\Desktop }
 function docs { z ~\Documents }
 function dwn { z D:\dwn }
 function cdl { z ~\Downloads }
-# !DEPRECIATED
-# function cde { z D:\Code }
 
 # Get file info
 function which($name) { Get-Command $name -ErrorAction SilentlyContinue | Select-Object Definition }
@@ -32,6 +30,9 @@ Set-Alias time Measure-Command
 
 # Create a new directory and enter it
 Set-Alias mkd CreateAndSetDirectory
+
+# Advanced remove
+Set-Alias arm RemoveFilesMatchingRegex
 
 # Create a new file
 Set-Alias touch ni

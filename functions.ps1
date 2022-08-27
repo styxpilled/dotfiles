@@ -53,7 +53,7 @@ function GetFilesMatchingRegex([string] $reg) {
 }
 
 function RemoveFilesMatchingRegex([string] $reg) {
-  Get-ChildItem $Path | Where-Object { $_.Name -Match $reg } | Remove-Item
+  GetFilesMatchingRegex $reg | Remove-Item -Recurse
 }
 
 function howto(
