@@ -43,9 +43,6 @@ Set-Alias open ii
 # Clear the screen
 Set-Alias c clear
 
-# Neofetch but worse
-Set-Alias winfetch "pwshfetch-test-1"
-
 # Check public IP
 Set-Alias wip whatsmyip
 
