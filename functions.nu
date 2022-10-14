@@ -21,9 +21,14 @@ def zc [
     code .
 }
 
+# initial git push -u origin main
+def gpuom [] {
+    git push -u origin main
+}
+
 # git push origin main
 def gpom [] {
-    git push -u origin main
+    git push origin main
 }
 
 # Get the weather forecast
