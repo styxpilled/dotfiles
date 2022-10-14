@@ -36,6 +36,18 @@ def uptime [] {
     sys | get host | get uptime
 }
 
+# Print history lines
+def printhistory [
+    count: int = 25  # How many lines to print
+    ] {
+  history
+  | last $count
+  | update command {|f|
+      $f.command 
+      | nu-highlight
+    }
+}
+
 # Get the weather forecast
 def wtw [
     city: string = ""           # The city you want to look up (defaults to your current city)
