@@ -12,3 +12,8 @@ def conventionalcommits [] {
 (ansi green)ops(ansi reset): infrastructure, deployment, backup, recovery
 (ansi green)chore(ansi reset): miscellaneous, e.g. modifying .gitignore"
 }
+
+def zc [dir] {
+    __zoxide_z $dir
+    code .
+}
