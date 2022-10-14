@@ -51,3 +51,7 @@ Set-Alias wtw whatstheweather
 
 # Check the weather, short form
 Set-Alias wtws whatstheweathershort
+
+# pnpm
+Set-Alias pn pnpm
+# Set-Alias pnx pnpm dlx

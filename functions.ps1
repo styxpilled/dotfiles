@@ -30,6 +30,10 @@ function GitPushOriginMain {
   git push origin main
 }
 
+function pnx() {
+  pnpm dlx $args
+}
+
 function whatsmyip {
   (Invoke-WebRequest ifconfig.me/ip).Content.Trim()
 }
