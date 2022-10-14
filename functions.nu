@@ -31,6 +31,11 @@ def gpom [] {
     git push origin main
 }
 
+# Get uptime
+def uptime [] {
+    sys | get host | get uptime
+}
+
 # Get the weather forecast
 def wtw [
     city: string = ""           # The city you want to look up (defaults to your current city)
