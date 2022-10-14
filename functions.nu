@@ -13,11 +13,19 @@ def conventionalcommits [] {
 (ansi green)chore(ansi reset): miscellaneous, e.g. modifying .gitignore"
 }
 
-def zc [dir] {
+def zc [dir: string] {
     __zoxide_z $dir
     code .
 }
 
-def gpom {
+def gpom [] {
     git push -u origin main
+}
+
+def wtw [city: string = ""] {
+    curl $"wttr.in/($city)"
+}
+
+def wtws [city: string = ""] {
+    curl $"wttr.in/($city)?format=3"
 }
