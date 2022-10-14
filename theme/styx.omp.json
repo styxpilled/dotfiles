@@ -6,9 +6,7 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#807afc",
-          "foreground": "#ffffff",
-          "powerline_symbol": "\ue0b0",
+          "foreground": "#908aff",
           "properties": {
             "folder_icon": "..",
             "folder_separator_icon": "/",
@@ -16,9 +14,15 @@
             "max_depth": 3,
             "style": "agnoster_short"
           },
-          "style": "powerline",
+          "style": "plain",
           "template": " {{ .Path }} ",
           "type": "path"
+        },
+        {
+          "foreground": "#908aff",
+          "style": "plain",
+          "template": "\u276f",
+          "type": "text"
         }
       ],
       "type": "prompt"
