@@ -17,3 +17,7 @@ def zc [dir] {
     __zoxide_z $dir
     code .
 }
+
+def gpom {
+    git push -u origin main
+}
