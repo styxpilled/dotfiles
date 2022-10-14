@@ -46,5 +46,5 @@ oh-my-posh init nu --config "~\dotfiles\theme\styx.omp.json"
 # starship init nu | save ~/.cache/starship/init.nu
 
 # Importing all the sub modules
-source ~/dotfiles/aliases.nu
 source ~/dotfiles/functions.nu
+source ~/dotfiles/aliases.nu

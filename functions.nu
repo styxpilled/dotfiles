@@ -13,19 +13,33 @@ def conventionalcommits [] {
 (ansi green)chore(ansi reset): miscellaneous, e.g. modifying .gitignore"
 }
 
+# Go to a directory with zoxide an open vscode there
 def zc [dir: string] {
     __zoxide_z $dir
     code .
 }
 
+# git push origin main
 def gpom [] {
     git push -u origin main
 }
 
+# Get the weather forecast
 def wtw [city: string = ""] {
     curl $"wttr.in/($city)"
 }
 
+# Get the weather forecast in short format
 def wtws [city: string = ""] {
     curl $"wttr.in/($city)?format=3"
+}
+
+# Get your public IPv4 address
+def whatsmyip [] {
+    curl ifconfig.me/ip
+}
+
+# Open a directory in File Explorer (defaults to .)
+def oe [dir: string = "."] {
+    ^start $dir
 }
