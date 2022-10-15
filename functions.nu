@@ -62,6 +62,32 @@ def whatsmyip [] {
     curl ifconfig.me/ip
 }
 
+def bump [
+    --type (-t): int = 1
+] {
+    open package.json 
+        | update version (($in.version
+        | split row ".")
+        | update $type (
+            ($in | get $type)
+            | into int 
+            | $in + 1)
+        | str join ".")
+        | save package.json
+}
+
+def "bump major" [] {
+    bump -t 0
+}
+
+def "bump minor" [] {
+    bump -t 1
+}
+
+def "bump patch" [] {
+    bump -t 2
+}
+
 # Open a directory in File Explorer (defaults to .)
 def oe [
     dir: string = "."   # The directory name (defaults to .)

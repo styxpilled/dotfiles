@@ -39,7 +39,7 @@ zoxide init nushell --hook prompt | save ~/.cache/zoxide/.zoxide.nu
 source ~/.cache/zoxide/.zoxide.nu
 
 # STARSHIP
-oh-my-posh init nu --config "~\dotfiles\theme\styx.omp.json"
+oh-my-posh init nu --config ~\dotfiles\theme\styx.omp.json
 
 # let-env STARSHIP_CONFIG = 'C:/Users/styx/dotfiles/config/starship.toml'
 # mkdir ~/.cache/starship
