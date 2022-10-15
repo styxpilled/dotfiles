@@ -88,6 +88,37 @@ def "bump patch" [] {
     bump -t 2
 }
 
+def tsinit [] {
+    let dir = ($env.PWD | split row "\\" | get (($in | length) - 1))
+    let package = {
+        name: $dir
+        version: "0.1.0"
+        description: ""
+        main: "dist/index.js"
+        scripts: {
+          test: "tsc && node dist/test.js"
+          dev: "tsc && node dist/index.js"
+        }
+        keywords: []
+        author: ""
+        license: "ISC"
+        dependencies: {}
+    }
+    $package | save package.json
+    let tsconfig = {
+        compilerOptions: {
+          module: "commonjs",
+          outDir: "dist/"
+        }
+        exclude: [
+          "node_modules"
+        ]
+    }
+    $tsconfig | save tsconfig.json
+    mkdir src
+    touch src/index.ts
+}
+
 # Open a directory in File Explorer (defaults to .)
 def oe [
     dir: string = "."   # The directory name (defaults to .)
