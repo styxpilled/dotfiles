@@ -40,12 +40,12 @@ def uptime [] {
 def printhistory [
     count: int = 25  # How many lines to print
     ] {
-  history
-  | last $count
-  | update command {|f|
-      $f.command 
-      | nu-highlight
-    }
+    history
+    | last $count
+    | update command {|f|
+        $f.command 
+        | nu-highlight
+        }
 }
 
 # Get the weather forecast
@@ -62,9 +62,10 @@ def whatsmyip [] {
     curl ifconfig.me/ip
 }
 
+# SEMVER bump package.json
 def bump [
-    --type (-t): int = 1
-] {
+    --type (-t): int = 1    # 0 = major; 1 = minor; 2 = patch;
+    ] {
     open package.json 
         | update version (($in.version
         | split row ".")
@@ -76,47 +77,79 @@ def bump [
         | save package.json
 }
 
+# SEMVER bump MAJOR package.json (X+1.0.0)
 def "bump major" [] {
     bump -t 0
 }
 
+# SEMVER bump MINOR package.json (0.X+1.0)
 def "bump minor" [] {
     bump -t 1
 }
 
+# SEMVER bump PATCH package.json (0.0.X+1)
 def "bump patch" [] {
     bump -t 2
 }
 
-def tsinit [] {
-    let dir = ($env.PWD | split row "\\" | get (($in | length) - 1))
-    let package = {
-        name: $dir
+# Initialize a typescript project
+def "init ts" [
+    name: string = ""   # The project name (defaults to the current directory name)
+    ] {
+    let projectname = if $name == "" {
+        $env.PWD
+        | split row "\\"
+        | get (
+            ($in
+            | length) - 1)
+        } else $name
+    {
+        name: $projectname
         version: "0.1.0"
         description: ""
         main: "dist/index.js"
         scripts: {
-          test: "tsc && node dist/test.js"
-          dev: "tsc && node dist/index.js"
+            test: "tsc && node dist/test.js"
+            dev: "tsc && node dist/index.js"
         }
         keywords: []
         author: ""
         license: "ISC"
         dependencies: {}
-    }
-    $package | save package.json
-    let tsconfig = {
+    } | save package.json
+    {
         compilerOptions: {
-          module: "commonjs",
-          outDir: "dist/"
+            module: "commonjs",
+            outDir: "dist/"
         }
         exclude: [
-          "node_modules"
+            "node_modules"
         ]
-    }
-    $tsconfig | save tsconfig.json
+    } | save tsconfig.json
     mkdir src
     touch src/index.ts
+}
+
+# Initialize a styx-template sveltekit project (styxpilled/styx-template)
+def "init styxkit" [
+    name: string = ""   # The project name (will prompt if not provided)
+    ] {
+    let projectname = if $name == "" {
+        input $"(ansi green)\u276f "
+        | into string
+        } else $name
+    pnpm dlx degit styxpilled/styx-template $projectname
+}
+
+# Initialize a sveltekit project (svelte@latest)
+def "init sveltekit" [
+    name: string = ""   # The project name (will prompt if not provided)
+    ] {
+    let projectname = if $name == "" {
+        input $"(ansi green)\u276f "
+        | into string
+        } else $name
+    pnpm create svelte@latest $projectname
 }
 
 # Open a directory in File Explorer (defaults to .)
