@@ -48,6 +48,15 @@ def printhistory [
         }
 }
 
+# Convert videos to mp4
+def mediatomp4 [
+    input: string
+    --output (-o): string = ""
+    ] {
+        let newname = ($input | str substring [0 ($input | str index-of ".")])
+        ffmpeg -i $input $"($newname).mp4" 
+    }
+
 # Get the weather forecast
 def wtw [
     city: string = ""           # The city you want to look up (defaults to your current city)
