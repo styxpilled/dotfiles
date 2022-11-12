@@ -43,7 +43,7 @@ def git-log [
     | each {|row| insert type (
           if $row.msg =~ '.+: .+' {
               if $row.msg =~ '.+\(.+\): .+' {
-                  $row.msg | parse "{type}({context}): {message}"
+                  $row.msg | parse "{type}({scope}): {message}"
               } else {
                   $row.msg | parse "{type}: {message}"
               }
