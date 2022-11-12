@@ -31,6 +31,32 @@ def gpom [] {
     git push origin main
 }
 
+# git log that works with nushell tables
+def git-log [
+    count:int = 30
+    ] {
+    let commits = (git log -n $count --format="%s // %h // %ae // %aI"
+    | lines
+    | split column " // " msg commit author date
+    | each {|row| update date ($row.date | into datetime)}
+    | each {|row| update author ($row.author | split row "@" | build-string ($in.0))}
+    | each {|row| insert type (
+          if $row.msg =~ '.+: .+' {
+              if $row.msg =~ '.+\(.+\): .+' {
+                  $row.msg | parse "{type}({context}): {message}"
+              } else {
+                  $row.msg | parse "{type}: {message}"
+              }
+          } else {
+              $row.msg
+          })}
+    | reject msg
+    | move type --after commit
+    | flatten -a)
+
+    $commits
+}
+
 # Get uptime
 def uptime [] {
     sys | get host | get uptime
