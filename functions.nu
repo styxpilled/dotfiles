@@ -75,13 +75,23 @@ def printhistory [
 }
 
 # Convert videos to mp4
-def mediatomp4 [
+def "fileconvert video" [
     input: string
     --output (-o): string = ""
     ] {
-        let newname = ($input | str substring [0 ($input | str index-of ".")])
-        ffmpeg -i $input $"($newname).mp4" 
-    }
+    let newname = ($input | str substring [0 ($input | str index-of "." -e)])
+    ffmpeg -i $input $"($newname).mp4" 
+}
+
+def "fileconvert pdf" [
+    input: string
+    --output (-o): string = ""
+    --format (-f): string = "jpg"
+    ] {
+      let newname = ($input | str substring [0 ($input | str index-of "." -e)])
+      print $newname $format
+    gswin64 -dNOPAUSE -dBATCH -r96 -sDEVICE=jpeg $"-sOutputFile=($newname).($format)" -dLastPage=1 $input
+}
 
 # Get the weather forecast
 def wtw [
