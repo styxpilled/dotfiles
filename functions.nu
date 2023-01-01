@@ -75,15 +75,27 @@ def printhistory [
 }
 
 # Convert videos to mp4
-def "fileconvert video" [
+def "file convert video" [
     input: string
     --output (-o): string = ""
+    --format (-f): string = "mp4"
     ] {
     let newname = ($input | str substring [0 ($input | str index-of "." -e)])
-    ffmpeg -i $input $"($newname).mp4" 
+    ffmpeg -hide_banner -loglevel error -i $input $"($newname).($format)" 
 }
 
-def "fileconvert pdf" [
+# Convert videos to gif
+def "file convert gif" [
+  input: string
+  --output (-o): string = ""
+  --format (-f): string = "gif"
+  ] {
+  let newname = ($input | str substring [0 ($input | str index-of "." -e)])
+  ffmpeg -hide_banner -loglevel error -i $input -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $"($newname).($format)"
+}
+
+# Convert pdfs to images
+def "file convert pdf" [
     input: string
     --output (-o): string = ""
     --format (-f): string = "jpg"
