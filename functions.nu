@@ -21,6 +21,21 @@ def zc [
     code .
 }
 
+# Open a directory in File Explorer (defaults to .)
+def browse [
+    dir: string = "."   # The directory name (defaults to .)
+    ] {
+    ^start $dir
+}
+
+# Open a directory or file in Visual Studio Code (defaults to .) and exit
+def vsc [
+    dir: string = "."   # The directory or file name (defaults to .)
+    ] {
+    code $dir
+    exit
+}
+
 # initial git push -u origin main
 def gpuom [] {
     git push -u origin main
@@ -39,7 +54,7 @@ def git-log [
     | lines
     | split column " // " msg commit author date
     | each {|row| update date ($row.date | into datetime)}
-    | each {|row| update author ($row.author | split row "@" | build-string ($in.0))}
+    | each {|row| update author ($row.author | split row "@" | str join ($in.0))}
     | each {|row| insert type (
           if $row.msg =~ '.+: .+' {
               if $row.msg =~ '.+\(.+\): .+' {
@@ -81,7 +96,7 @@ def "file convert video" [
     --format (-f): string = "mp4"
     ] {
     let newname = ($input | str substring [0 ($input | str index-of "." -e)])
-    ffmpeg -hide_banner -loglevel error -i $input $"($newname).($format)" 
+    ffmpeg -hide_banner -hwaccel cuda -i $input $"($newname).($format)" 
 }
 
 # Convert videos to gif
@@ -91,7 +106,7 @@ def "file convert gif" [
   --format (-f): string = "gif"
   ] {
   let newname = ($input | str substring [0 ($input | str index-of "." -e)])
-  ffmpeg -hide_banner -loglevel error -i $input -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $"($newname).($format)"
+  ffmpeg -hide_banner -i $input -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $"($newname).($format)"
 }
 
 # Convert pdfs to images
@@ -207,26 +222,4 @@ def "init sveltekit" [
         | into string
         } else $name
     pnpm create svelte@latest $projectname
-}
-
-# Open a directory in File Explorer (defaults to .)
-def oe [
-    dir: string = "."   # The directory name (defaults to .)
-    ] {
-    ^start $dir
-}
-
-# Open a directory or file in Visual Studio Code (defaults to .)
-def oc [
-    dir: string = "."   # The directory or file name (defaults to .)
-    ] {
-    code $dir
-}
-
-# Open a directory or file in Visual Studio Code (defaults to .) and exit
-def oce [
-    dir: string = "."   # The directory or file name (defaults to .)
-    ] {
-    code $dir
-    exit
 }
