@@ -37,12 +37,12 @@ let-env FORCE_COLOR = 1
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # let-env PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 
-# ZOXIDE
-zoxide init nushell --hook prompt | save ~/.cache/zoxide/.zoxide.nu
-source ~/.cache/zoxide/.zoxide.nu
-
 # STARSHIP
 oh-my-posh init nu --config ~\dotfiles\theme\styx.omp.json
+
+# ZOXIDE
+# zoxide init nushell --hook prompt | save ~/.cache/zoxide/.zoxide.nu
+source ~/.cache/zoxide/.zoxide.nu
 
 # let-env STARSHIP_CONFIG = 'C:/Users/styx/dotfiles/config/starship.toml'
 # mkdir ~/.cache/starship
