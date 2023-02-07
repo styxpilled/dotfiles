@@ -36,6 +36,23 @@ def vsc [
     exit
 }
 
+export def clip [] {
+    let input = $in
+    let input = if ($input | describe) == "string" {
+        $input | ansi strip
+    } else { $input }
+
+    $input | clip.exe
+
+    print $input
+
+    print --no-newline $"(ansi white_italic)(ansi white_dimmed)saved to clipboard"
+    if ($input | describe) == "string" {
+        print --no-newline " (stripped)"
+    }
+    print --no-newline $"(ansi reset)"
+}
+
 # initial git push -u origin main
 def gpuom [] {
     git push -u origin main
