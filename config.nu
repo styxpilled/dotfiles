@@ -541,4 +541,5 @@ module completions {
 use completions *
 
 source ~/.oh-my-posh.nu
+source ~/.cache/zoxide/.zoxide.nu
 # source ~/.cache/starship/init.nu

@@ -40,14 +40,15 @@ let-env FORCE_COLOR = 1
 # STARSHIP
 oh-my-posh init nu --config ~\dotfiles\theme\styx.omp.json
 
-# ZOXIDE
-# zoxide init nushell --hook prompt | save ~/.cache/zoxide/.zoxide.nu
-source ~/.cache/zoxide/.zoxide.nu
-
-# let-env STARSHIP_CONFIG = 'C:/Users/styx/dotfiles/config/starship.toml'
-# mkdir ~/.cache/starship
-# starship init nu | save ~/.cache/starship/init.nu
 
 # Importing all the sub modules
 source ~/dotfiles/functions.nu
 source ~/dotfiles/aliases.nu
+
+# ZOXIDE
+# zoxide init nushell --hook prompt | save -f ~/.cache/zoxide/.zoxide.nu
+
+
+# let-env STARSHIP_CONFIG = 'C:/Users/styx/dotfiles/config/starship.toml'
+# mkdir ~/.cache/starship
+# starship init nu | save ~/.cache/starship/init.nu
