@@ -36,6 +36,7 @@ def vsc [
     exit
 }
 
+# 
 export def clip [
   --silent (-s)
 ] {
@@ -276,4 +277,30 @@ def "h2 flexbox" [
     }
 
     $output | clip -s
+}
+
+def "h2 gitdate" [
+    time: duration = 0day
+    --positive (-p)
+    --manual (-m)
+    --confirm (-c)
+    ] {
+    let amendtime = (date now | if ($positive) { $in + $time } else { $in - $time } | date format $"%c %z")
+
+    if ($manual) {
+      print $"git commit --amend --no-edit --date \"($amendtime)\""
+      "git commit --amend --no-edit --date \"($amendtime)\"") | clip -s
+    } else {
+      if ($confirm) {
+        git commit --amend --no-edit --date $"($amendtime)"
+      } else {
+        print $"git commit --amend --no-edit --date \"($amendtime)\""
+        let can_proceed = (input "Are you satisfied? Y/n ")
+        if ($can_proceed == "Y") {
+          git commit --amend --no-edit --date $"($amendtime)"
+        } else {
+          print "Aborting..."
+        }
+      }
+    }
 }
