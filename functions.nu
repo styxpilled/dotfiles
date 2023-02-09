@@ -36,7 +36,9 @@ def vsc [
     exit
 }
 
-export def clip [] {
+export def clip [
+  --silent (-s)
+] {
     let input = $in
     let input = if ($input | describe) == "string" {
         $input | ansi strip
@@ -44,13 +46,15 @@ export def clip [] {
 
     $input | clip.exe
 
-    print $input
+    if (not $silent) {
+      print $input
 
-    print --no-newline $"(ansi white_italic)(ansi white_dimmed)saved to clipboard"
-    if ($input | describe) == "string" {
-        print --no-newline " (stripped)"
+      print --no-newline $"(ansi white_italic)(ansi white_dimmed)saved to clipboard"
+      if ($input | describe) == "string" {
+          print --no-newline " (stripped)"
+      }
+      print --no-newline $"(ansi reset)"
     }
-    print --no-newline $"(ansi reset)"
 }
 
 # initial git push -u origin main
@@ -239,4 +243,37 @@ def "init sveltekit" [
         | into string
         } else $name
     pnpm create svelte@latest $projectname
+}
+
+# Reminder on how to use flexbox
+def "h2 flexbox" [
+    direction: string = "row"
+    justify: string = "center"
+    align: string = "center"
+    --center (-c)
+    --verbose (-v)
+    ] {
+    mut output = $"(ansi orange1).container {
+  (ansi grey82)display: (ansi orange1)flex(ansi grey82);
+  (ansi grey82)flex-direction: (ansi orange1)($direction)(ansi grey82);"
+    if ($center) {
+      $output += $"\n  (ansi grey82)justify-content: (ansi orange1)center(ansi grey82);"
+      $output += $"\n  (ansi grey82)align-items: (ansi orange1)center(ansi grey82);"
+    } else {
+      $output += $"\n  (ansi grey82)justify-content: (ansi orange1)($justify)(ansi grey82);"
+      $output += $"\n  (ansi grey82)align-items: (ansi orange1)($align)(ansi grey82);"
+    }
+
+    $output += $"\n(ansi orange1)}(ansi reset)"
+
+    print $output
+
+    if ($verbose) {
+      print $"(ansi green)justify(ansi grey82) — to position something along the primary axis."
+      print $"(ansi green)align(ansi grey82) — to position something along the cross axis."
+      print $"(ansi green)content(ansi grey82) — a group of “stuff” that can be distributed."
+      print $"(ansi green)items(ansi grey82) — single items that can be positioned individually.(ansi reset)"
+    }
+
+    $output | clip -s
 }
