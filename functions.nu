@@ -36,9 +36,9 @@ def vsc [
     exit
 }
 
-# 
+# Put something into clipboard
 export def clip [
-  --silent (-s)
+  --silent (-s) # Don't print anything
 ] {
     let input = $in
     let input = if ($input | describe) == "string" {
@@ -279,17 +279,18 @@ def "h2 flexbox" [
     $output | clip -s
 }
 
-def "h2 gitdate" [
-    time: duration = 0day
-    --positive (-p)
-    --manual (-m)
-    --confirm (-c)
+# Reminder on how to ammend commit date
+def "h2 git datetime" [
+    time: duration = 0day   # Amount of time to shift from date now
+    --positive (-p)         # Add the date instead of subtracting
+    --manual (-m)           # Put the command in the clipboard instead of runnning it
+    --confirm (-c)          # Skip confirmation screen
     ] {
-    let amendtime = (date now | if ($positive) { $in + $time } else { $in - $time } | date format $"%c %z")
+    let amendtime = (date now | if ($positive) { $in + $time } else { $in - $time } | date format $"%c")
 
     if ($manual) {
       print $"git commit --amend --no-edit --date \"($amendtime)\""
-      "git commit --amend --no-edit --date \"($amendtime)\"") | clip -s
+      $"git commit --amend --no-edit --date \"($amendtime)\"" | clip -s
     } else {
       if ($confirm) {
         git commit --amend --no-edit --date $"($amendtime)"
@@ -298,6 +299,37 @@ def "h2 gitdate" [
         let can_proceed = (input "Are you satisfied? Y/n ")
         if ($can_proceed == "Y") {
           git commit --amend --no-edit --date $"($amendtime)"
+        } else {
+          print "Aborting..."
+        }
+      }
+    }
+}
+
+# Reminder on how to ammend commit message
+def "h2 git message" [
+    input: string = "Commit message here"
+    --prompt (-p)           # Prompt for input
+    --manual (-m)           # Put the command in the clipboard instead of runnning it
+    --confirm (-c)          # Skip confirmation screen
+    ] {
+      # @('fix the commit message', "git commit --amend --no-edit --message `"$(iif $param $param 'Commit message here')`"");
+    
+    let message = if ($input == "Commit message here" and $prompt) { (input "What do you want the commit message to be? ") } else {
+      $input
+    }
+
+    if ($manual) {
+      print $"git commit --amend --no-edit --message \"($message)\""
+      $"git commit --amend --no-edit --message \"($message)\"" | clip -s
+    } else {
+      if ($confirm) {
+        git commit --amend --no-edit --message $"($message)"
+      } else {
+        print $"git commit --amend --no-edit --message \"($message)\""
+        let can_proceed = (input "Are you satisfied? Y/n ")
+        if ($can_proceed == "Y") {
+          git commit --amend --no-edit --message $"($message)"
         } else {
           print "Aborting..."
         }
