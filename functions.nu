@@ -246,9 +246,11 @@ def "init sveltekit" [
     pnpm create svelte@latest $projectname
 }
 
+def "h2 completions flexbox direction" [] { ["row", "column"] }
+
 # Reminder on how to use flexbox
 def "h2 flexbox" [
-    direction: string = "row"
+    direction: string@"h2 completions flexbox direction" = "row"
     justify: string = "center"
     align: string = "center"
     --center (-c)
@@ -280,7 +282,7 @@ def "h2 flexbox" [
 }
 
 # Reminder on how to ammend commit date
-def "h2 git datetime" [
+def "h2 git date" [
     time: duration = 0day   # Amount of time to shift from date now
     --positive (-p)         # Add the date instead of subtracting
     --manual (-m)           # Put the command in the clipboard instead of runnning it
@@ -335,4 +337,13 @@ def "h2 git message" [
         }
       }
     }
+}
+
+def "typeof getlicense" [] { ls -s '~/dotfiles/licenses' | $in.name }
+def getlicense [
+    license: string@"typeof getlicense"
+    --silent (-s)
+    ] {
+    if (not $silent) { print $"Copying license ($license) to ($env.PWD | path join "LICENSE")" }
+    $"~/dotfiles/licenses/($license)" | path expand | cp $in ./LICENSE
 }
