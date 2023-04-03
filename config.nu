@@ -420,17 +420,33 @@ module completions {
     ^git remote | lines | each { |line| $line | str trim }
   }
 
-  export extern "pnpm add" [
+  export extern "pn add" [
     pkg?: string
-    -D
-    -O
-    -g
+    --save-dev (-D)         # Install the specified package(s) as devDependencies.
+    --save-prod (-P)        # Install the specified package(s) as regular dependencies.
+    --save-optional (-O)    # Install the specified package(s) as optionalDependencies.
+    --save-exact (-E)       # Saved dependencies will be configured with an exact version rather than using pnpm's default semver range operator.
+    --save-peer             # Add one or more packages to peerDependencies and install them as dev dependencies.
+    --global (-g)           # Install the specified package(s) globally.
+    --workspace             # Only adds the new dependency if it is found in the workspace.
+    --filter: string
+  ]
+
+  export extern "pn i" [
+    --force                     # Force reinstall dependencies: refetch packages modified in store, recreate a lockfile and/or modules directory created by a non-compatible version of pnpm. Install all optionalDependencies even they don't satisfy the current environment(cpu, os, arch).
+    --offline                   # If true, pnpm will use only packages already available in the store. If a package won't be found locally, the installation will fail.
+    --prefer-offline            # If true, staleness checks for cached data will be bypassed, but missing data will be requested from the server. To force full offline mode, use --offline.
+    --frozen-lockfile           #	pnpm doesn't generate a lockfile and fails to install if the lockfile is out of sync with the manifest / an update is needed or no lockfile is present
+    --lockfile-only             #	Only updates pnpm-lock.yaml and package.json. Nothing gets written to the node_modules directory.
+    --no-optional               # optionalDependencies are not installed.
+    --prod (-P)                 # pnpm will not install any package listed in devDependencies and will remove those insofar they were already installed, if the NODE_ENV environment variable is set to production. Use this flag to instruct pnpm to ignore NODE_ENV and take its production status from this flag instead.
+    --dev (-D)                  # Only devDependencies are installed and dependencies are removed insofar they were already installed, regardless of the NODE_ENV.
   ]
 
   # Download objects and refs from another repository
   export extern "git fetch" [
     repository?: string@"nu-complete git remotes" # name of the repository to fetch
-    branch?: string@"nu-complete git branches" # name of the branch to fetch
+    branch?: string@"nu-complete git branches"    # name of the branch to fetch
     --all                                         # Fetch all remotes
     --append(-a)                                  # Append ref names and object names to .git/FETCH_HEAD
     --atomic                                      # Use an atomic transaction to update local refs.
