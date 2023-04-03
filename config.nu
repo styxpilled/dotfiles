@@ -410,18 +410,21 @@ module completions {
   # Custom completions for external commands (those outside of Nushell)
   # Each completions has two parts: the form of the external command, including its flags and parameters
   # and a helper command that knows how to complete values for those flags and parameters
-  #
-  # This is a simplified version of completions for git branches and git remotes
-  def "nu-complete git branches" [] {
-    ^git branch | lines | each { |line| $line | str replace '[\*\+] ' '' | str trim }
-  }
 
-  def "nu-complete git remotes" [] {
-    ^git remote | lines | each { |line| $line | str trim }
+  # Complete npm package names + descriptions
+  # TODO: add version to description
+  def "nu-complete pn add" [context: string] {
+    $context | split words | last 
+      | http get $"https://api.npms.io/v2/search?q=($in)"
+      | get results 
+      | get package 
+      | select -i name description version 
+      | update description {|item| $"v[($item.version)] ($item.description)" } 
+      | rename value description
   }
 
   export extern "pn add" [
-    pkg?: string
+    pkg?: string@"nu-complete pn add"
     --save-dev (-D)         # Install the specified package(s) as devDependencies.
     --save-prod (-P)        # Install the specified package(s) as regular dependencies.
     --save-optional (-O)    # Install the specified package(s) as optionalDependencies.
@@ -442,6 +445,15 @@ module completions {
     --prod (-P)                 # pnpm will not install any package listed in devDependencies and will remove those insofar they were already installed, if the NODE_ENV environment variable is set to production. Use this flag to instruct pnpm to ignore NODE_ENV and take its production status from this flag instead.
     --dev (-D)                  # Only devDependencies are installed and dependencies are removed insofar they were already installed, regardless of the NODE_ENV.
   ]
+
+  # This is a simplified version of completions for git branches and git remotes
+  def "nu-complete git branches" [] {
+    ^git branch | lines | each { |line| $line | str replace '[\*\+] ' '' | str trim }
+  }
+
+  def "nu-complete git remotes" [] {
+    ^git remote | lines | each { |line| $line | str trim }
+  }
 
   # Download objects and refs from another repository
   export extern "git fetch" [
@@ -552,6 +564,11 @@ module completions {
     --help                                          # Display this help message
   ]
 }
+
+def testy-test [] {
+
+  }
+
 
 # Get just the extern definitions without the custom completion commands
 use completions *
