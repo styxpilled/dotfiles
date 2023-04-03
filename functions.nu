@@ -76,7 +76,7 @@ def git-log [
     | lines
     | split column " // " msg commit author date
     | each {|row| update date ($row.date | into datetime)}
-    | each {|row| update author ($row.author | split row "@" | str join ($in.0))}
+    | each {|row| update author ($row.author | split row "@" | $in.0)}
     | each {|row| insert type (
           if $row.msg =~ '.+: .+' {
               if $row.msg =~ '.+\(.+\): .+' {
@@ -229,7 +229,7 @@ def "init styxkit" [
     name: string = ""   # The project name (will prompt if not provided)
     ] {
     let projectname = if $name == "" {
-        input $"(ansi green)\u276f "
+        input $"(ansi green)\u{276f} "
         | into string
         } else $name
     pnpm dlx degit styxpilled/styx-template $projectname
@@ -240,7 +240,7 @@ def "init sveltekit" [
     name: string = ""   # The project name (will prompt if not provided)
     ] {
     let projectname = if $name == "" {
-        input $"(ansi green)\u276f "
+        input $"(ansi green)\u{276f} "
         | into string
         } else $name
     pnpm create svelte@latest $projectname
