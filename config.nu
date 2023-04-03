@@ -446,6 +446,19 @@ module completions {
     --dev (-D)                  # Only devDependencies are installed and dependencies are removed insofar they were already installed, regardless of the NODE_ENV.
   ]
 
+  def "nu-complete cargo add" [context: string] {
+    $context | split words | last | 
+      http get https://crates.io/api/v1/crates?page=1&per_page=15&q=($in) 
+      | get crates 
+      | select -i name description newest_version
+      | update description {|item| $"v[($item.newest_version)] ($item.description)" } 
+      | rename value description
+  }
+
+  export extern "cargo add" [
+    crate?: string@"nu-complete cargo add"
+  ]
+
   # This is a simplified version of completions for git branches and git remotes
   def "nu-complete git branches" [] {
     ^git branch | lines | each { |line| $line | str replace '[\*\+] ' '' | str trim }
