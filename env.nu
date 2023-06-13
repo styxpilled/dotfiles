@@ -8,12 +8,12 @@ let-env dotfiles = ([$nu.home-path, "dotfiles"] | path join)
 # Note: The conversions happen *after* config.nu is loaded
 let-env ENV_CONVERSIONS = {
   "PATH": {
-    from_string: { |s| $s | split row (char esep) | path expand -n }
-    to_string: { |v| $v | path expand -n | str collect (char esep) }
+    from_string: { |s| $s | split row (char esep) | path expand --no-symlink }
+    to_string: { |v| $v | path expand --no-symlink | str join (char esep) }
   }
   "Path": {
-    from_string: { |s| $s | split row (char esep) | path expand -n }
-    to_string: { |v| $v | path expand -n | str collect (char esep) }
+    from_string: { |s| $s | split row (char esep) | path expand --no-symlink }
+    to_string: { |v| $v | path expand --no-symlink | str join (char esep) }
   }
 }
 
@@ -39,7 +39,6 @@ let-env FORCE_COLOR = 1
 
 # STARSHIP
 oh-my-posh init nu --config ~\dotfiles\theme\styx.omp.json
-
 
 # Importing all the sub modules
 source ~/dotfiles/functions.nu

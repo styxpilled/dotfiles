@@ -166,7 +166,6 @@ let-env config = {
       completer: null # check 'carapace_completer' above as an example
     }
   }
-
   hooks: {
     pre_prompt: [{
       $nothing  # replace with source code to run before the prompt is shown
@@ -413,38 +412,38 @@ module completions {
 
   # Complete npm package names + descriptions
   # TODO: add version to description
-  def "nu-complete pn add" [context: string] {
-    $context | split words | last 
-      | http get $"https://api.npms.io/v2/search?q=($in)"
-      | get results 
-      | get package 
-      | select -i name description version 
-      | update description {|item| $"v[($item.version)] ($item.description)" } 
-      | rename value description
-  }
+  # def "nu-complete pn add" [context: string] {
+  #   $context | split words | last 
+  #     | http get $"https://api.npms.io/v2/search?q=($in)"
+  #     | get results 
+  #     | get package 
+  #     | select -i name description version 
+  #     | update description {|item| $"v[($item.version)] ($item.description)" } 
+  #     | rename value description
+  # }
 
-  export extern "pn add" [
-    pkg?: string@"nu-complete pn add"
-    --save-dev (-D)         # Install the specified package(s) as devDependencies.
-    --save-prod (-P)        # Install the specified package(s) as regular dependencies.
-    --save-optional (-O)    # Install the specified package(s) as optionalDependencies.
-    --save-exact (-E)       # Saved dependencies will be configured with an exact version rather than using pnpm's default semver range operator.
-    --save-peer             # Add one or more packages to peerDependencies and install them as dev dependencies.
-    --global (-g)           # Install the specified package(s) globally.
-    --workspace             # Only adds the new dependency if it is found in the workspace.
-    --filter: string
-  ]
+  # export extern "pnpm add" [
+  #   pkg?: string@"nu-complete pn add"
+  #   --save-dev (-D)         # Install the specified package(s) as devDependencies.
+  #   --save-prod (-P)        # Install the specified package(s) as regular dependencies.
+  #   --save-optional (-O)    # Install the specified package(s) as optionalDependencies.
+  #   --save-exact (-E)       # Saved dependencies will be configured with an exact version rather than using pnpm's default semver range operator.
+  #   --save-peer             # Add one or more packages to peerDependencies and install them as dev dependencies.
+  #   --global (-g)           # Install the specified package(s) globally.
+  #   --workspace             # Only adds the new dependency if it is found in the workspace.
+  #   --filter: string
+  # ]
 
-  export extern "pn i" [
-    --force                     # Force reinstall dependencies: refetch packages modified in store, recreate a lockfile and/or modules directory created by a non-compatible version of pnpm. Install all optionalDependencies even they don't satisfy the current environment(cpu, os, arch).
-    --offline                   # If true, pnpm will use only packages already available in the store. If a package won't be found locally, the installation will fail.
-    --prefer-offline            # If true, staleness checks for cached data will be bypassed, but missing data will be requested from the server. To force full offline mode, use --offline.
-    --frozen-lockfile           #	pnpm doesn't generate a lockfile and fails to install if the lockfile is out of sync with the manifest / an update is needed or no lockfile is present
-    --lockfile-only             #	Only updates pnpm-lock.yaml and package.json. Nothing gets written to the node_modules directory.
-    --no-optional               # optionalDependencies are not installed.
-    --prod (-P)                 # pnpm will not install any package listed in devDependencies and will remove those insofar they were already installed, if the NODE_ENV environment variable is set to production. Use this flag to instruct pnpm to ignore NODE_ENV and take its production status from this flag instead.
-    --dev (-D)                  # Only devDependencies are installed and dependencies are removed insofar they were already installed, regardless of the NODE_ENV.
-  ]
+  # export extern "pn i" [
+  #   --force                     # Force reinstall dependencies: refetch packages modified in store, recreate a lockfile and/or modules directory created by a non-compatible version of pnpm. Install all optionalDependencies even they don't satisfy the current environment(cpu, os, arch).
+  #   --offline                   # If true, pnpm will use only packages already available in the store. If a package won't be found locally, the installation will fail.
+  #   --prefer-offline            # If true, staleness checks for cached data will be bypassed, but missing data will be requested from the server. To force full offline mode, use --offline.
+  #   --frozen-lockfile           #	pnpm doesn't generate a lockfile and fails to install if the lockfile is out of sync with the manifest / an update is needed or no lockfile is present
+  #   --lockfile-only             #	Only updates pnpm-lock.yaml and package.json. Nothing gets written to the node_modules directory.
+  #   --no-optional               # optionalDependencies are not installed.
+  #   --prod (-P)                 # pnpm will not install any package listed in devDependencies and will remove those insofar they were already installed, if the NODE_ENV environment variable is set to production. Use this flag to instruct pnpm to ignore NODE_ENV and take its production status from this flag instead.
+  #   --dev (-D)                  # Only devDependencies are installed and dependencies are removed insofar they were already installed, regardless of the NODE_ENV.
+  # ]
 
   def "nu-complete cargo add" [context: string] {
     $context | split words | last | 
@@ -455,8 +454,52 @@ module completions {
       | rename value description
   }
 
+  # TODO: 
+  # https://github.com/nushell/awesome-nu
+  # https://github.com/nushell/nu_scripts/blob/main/custom-completions/cargo/cargo-completions.nu
   export extern "cargo add" [
-    crate?: string@"nu-complete cargo add"
+    crate?: string@"nu-complete cargo add" 
+                            # Reference to a package to add as a dependency
+                            # You can reference a package by:
+                            # - `<name>`, like `cargo add serde` (latest version will be used)
+                            # - `<name>@<version-req>`, like `cargo add serde@1` or `cargo add serde@=1.0.38`
+    --no-default-features   # Disable the default features
+    --default-features      # Re-enable the default features
+    --features(-F):string   # Space or comma separated list of features to activate
+    --optional              # Mark the dependency as optional.
+                            # The package name will be exposed as feature of your crate.
+    --verbose(-v)           # Use verbose output (-vv very verbose/build.rs output)
+    --no-optional           # Mark the dependency as required.
+                            # The package will be removed from your features.
+    --color: string         # Coloring: auto, always, never
+    --rename: string        # Rename the dependency
+                            # Example uses:
+                            # - Depending on multiple versions of a crate
+                            # - Depend on crates with the same name from different registries
+    --frozen                # Require Cargo.lock and cache are up to date
+    --manifest-path: string # Path to Cargo.toml
+    --locked                # Require Cargo.lock is up to date
+    --package(-p): string   # Package to modify
+    --offline               # Run without accessing the network
+    --quiet(-q)             # Do not print cargo log messages
+    --config: string        # Override a configuration value
+    --dry-run               # Don't actually write the manifest
+    -Z: string              # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+    --help(-h)              # Print help information (use `-h` for a summary)
+    --path: string          # Filesystem path to local crate to add
+    --git: string           # Git repository location.
+                            # Without any other information, cargo will use latest commit on the main branch.
+    --branch: string        # Git branch to download the crate from
+    --tag: string           # Git tag to download the crate from
+    --rev: string           # Git reference to download the crate from. 
+                            # This is the catch all, handling hashes to named references in remote repositories.
+    --registry: string      # Package registry for this dependency
+    --dev                   # Add as development dependency. 
+                            # Dev-dependencies are not used when compiling a package for building, but are used for compiling tests, examples, and benchmarks. 
+                            # These dependencies are not propagated to other packages which depend on this package.
+    --build                 # Add as build dependency. 
+                            # Build-dependencies are the only dependencies available for use by build scripts (`build.rs` files).
+    --target: string        # Add as dependency to the given target platform
   ]
 
   # This is a simplified version of completions for git branches and git remotes
@@ -578,11 +621,18 @@ module completions {
   ]
 }
 
-def testy-test [] {
-
-  }
-
-
+# def "cargoe search" [ query: string, --limit=10] { 
+#   ^cargo search $query --limit $limit
+#   | lines 
+#   | each { 
+#       |line| if ($line | str contains "#") { 
+#           $line | parse --regex '(?P<name>.+) = "(?P<version>.+)" +# (?P<description>.+)' 
+#       } else { 
+#           $line | parse --regex '(?P<name>.+) = "(?P<version>.+)"' 
+#       } 
+#   } 
+#   | flatten
+# }
 # Get just the extern definitions without the custom completion commands
 use completions *
 
