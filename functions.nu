@@ -121,6 +121,16 @@ def "file convert video" [
     ffmpeg -hide_banner -hwaccel cuda -i $input $"($newname).($format)" 
 }
 
+# Extract audio stream from video
+def "file convert audio" [
+  input: string
+  --output (-o): string = ""
+  --format (-f): string = "mp3"
+  ] {
+    let newname = ($input | str substring [0 ($input | str index-of "." -e)])
+    ffmpeg -hide_banner -hwaccel cuda -i $input -q:a 0 -map a $"($newname).($format)" 
+}
+
 # Convert videos to gif
 def "file convert gif" [
   input: string
@@ -244,6 +254,11 @@ def "init sveltekit" [
         | into string
         } else $name
     pnpm create svelte@latest $projectname
+}
+
+def "h2 psql" [] {
+  # "psql -h localhost -p 5432 -U username default_database -W"
+  print "psql -h <REMOTE HOST> -p <REMOTE PORT> -U <DB_USER> <DB_NAME> -W"
 }
 
 def "h2 completions flexbox direction" [] { ["row", "column"] }
