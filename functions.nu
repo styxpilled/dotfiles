@@ -117,7 +117,7 @@ def "file convert video" [
     --output (-o): string = ""
     --format (-f): string = "mp4"
     ] {
-    let newname = ($input | str substring [0 ($input | str index-of "." -e)])
+    let newname = ($input | str substring 0..($input | str index-of "." -e))
     ffmpeg -hide_banner -hwaccel cuda -i $input $"($newname).($format)" 
 }
 
@@ -127,8 +127,8 @@ def "file convert audio" [
   --output (-o): string = ""
   --format (-f): string = "mp3"
   ] {
-    let newname = ($input | str substring [0 ($input | str index-of "." -e)])
-    ffmpeg -hide_banner -hwaccel cuda -i $input -q:a 0 -map a $"($newname).($format)" 
+    let newname = ($input | str substring 0..($input | str index-of "." -e))
+    ffmpeg -hide_banner -i $input -q:a 0 -map a $"($newname).($format)" 
 }
 
 # Convert videos to gif
@@ -137,8 +137,8 @@ def "file convert gif" [
   --output (-o): string = ""
   --format (-f): string = "gif"
   ] {
-  let newname = ($input | str substring [0 ($input | str index-of "." -e)])
-  ffmpeg -hide_banner -i $input -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $"($newname).($format)"
+    let newname = ($input | str substring 0..($input | str index-of "." -e))
+    ffmpeg -hide_banner -i $input -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $"($newname).($format)"
 }
 
 # Convert pdfs to images
@@ -261,39 +261,8 @@ def "h2 psql" [] {
   print "psql -h <REMOTE HOST> -p <REMOTE PORT> -U <DB_USER> <DB_NAME> -W"
 }
 
-def "h2 completions flexbox direction" [] { ["row", "column"] }
-
-# Reminder on how to use flexbox
-def "h2 flexbox" [
-    direction: string@"h2 completions flexbox direction" = "row"
-    justify: string = "center"
-    align: string = "center"
-    --center (-c)
-    --verbose (-v)
-    ] {
-    mut output = $"(ansi orange1).container {
-  (ansi grey82)display: (ansi orange1)flex(ansi grey82);
-  (ansi grey82)flex-direction: (ansi orange1)($direction)(ansi grey82);"
-    if ($center) {
-      $output += $"\n  (ansi grey82)justify-content: (ansi orange1)center(ansi grey82);"
-      $output += $"\n  (ansi grey82)align-items: (ansi orange1)center(ansi grey82);"
-    } else {
-      $output += $"\n  (ansi grey82)justify-content: (ansi orange1)($justify)(ansi grey82);"
-      $output += $"\n  (ansi grey82)align-items: (ansi orange1)($align)(ansi grey82);"
-    }
-
-    $output += $"\n(ansi orange1)}(ansi reset)"
-
-    print $output
-
-    if ($verbose) {
-      print $"(ansi green)justify(ansi grey82) — to position something along the primary axis."
-      print $"(ansi green)align(ansi grey82) — to position something along the cross axis."
-      print $"(ansi green)content(ansi grey82) — a group of “stuff” that can be distributed."
-      print $"(ansi green)items(ansi grey82) — single items that can be positioned individually.(ansi reset)"
-    }
-
-    $output | clip -s
+def "compose down" [] {
+  docker compose -f "docker-compose.yml" down
 }
 
 # Reminder on how to ammend commit date
