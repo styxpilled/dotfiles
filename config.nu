@@ -1,339 +1,265 @@
 # for more information on themes see
 # https://www.nushell.sh/book/coloring_and_theming.html
 let dark_theme = {
-    # color for nushell primitives
-    separator: white
-    leading_trailing_space_bg: { attr: n } # no fg, no bg, attr none effectively turns this off
-    header: green_bold
-    empty: blue
-    bool: white
-    int: white
-    filesize: white
-    duration: white
-    date: white
-    range: white
-    float: white
-    string: white
-    nothing: white
-    binary: white
-    cellpath: white
-    row_index: green_bold
-    record: white
-    list: white
-    block: white
-    hints: dark_gray
+  # color for nushell primitives
+  separator: white
+  leading_trailing_space_bg: { attr: n } # no fg, no bg, attr none effectively turns this off
+  header: green_bold
+  empty: blue
+  bool: white
+  int: white
+  filesize: white
+  duration: white
+  date: white
+  range: white
+  float: white
+  string: white
+  nothing: white
+  binary: white
+  cellpath: white
+  row_index: green_bold
+  record: white
+  list: white
+  block: white
+  hints: dark_gray
 
-    # shapes are used to change the cli syntax highlighting
-    shape_garbage: { fg: "#FFFFFF" bg: "#FF0000" attr: b}
-    shape_binary: purple_bold
-    shape_bool: light_cyan
-    shape_int: purple_bold
-    shape_float: purple_bold
-    shape_range: yellow_bold
-    shape_internalcall: cyan_bold
-    shape_external: cyan
-    shape_externalarg: green_bold
-    shape_literal: blue
-    shape_operator: yellow
-    shape_signature: green_bold
-    shape_string: green
-    shape_string_interpolation: cyan_bold
-    shape_datetime: cyan_bold
-    shape_list: cyan_bold
-    shape_table: blue_bold
-    shape_record: cyan_bold
-    shape_block: blue_bold
-    shape_filepath: cyan
-    shape_globpattern: cyan_bold
-    shape_variable: purple
-    shape_flag: blue_bold
-    shape_custom: green
-    shape_nothing: light_cyan
-}
-
-let light_theme = {
-    # color for nushell primitives
-    separator: dark_gray
-    leading_trailing_space_bg: { attr: n } # no fg, no bg, attr none effectively turns this off
-    header: green_bold
-    empty: blue
-    bool: dark_gray
-    int: dark_gray
-    filesize: dark_gray
-    duration: dark_gray
-    date: dark_gray
-    range: dark_gray
-    float: dark_gray
-    string: dark_gray
-    nothing: dark_gray
-    binary: dark_gray
-    cellpath: dark_gray
-    row_index: green_bold
-    record: white
-    list: white
-    block: white
-    hints: dark_gray
-
-    # shapes are used to change the cli syntax highlighting
-    shape_garbage: { fg: "#FFFFFF" bg: "#FF0000" attr: b}
-    shape_binary: purple_bold
-    shape_bool: light_cyan
-    shape_int: purple_bold
-    shape_float: purple_bold
-    shape_range: yellow_bold
-    shape_internalcall: cyan_bold
-    shape_external: cyan
-    shape_externalarg: green_bold
-    shape_literal: blue
-    shape_operator: yellow
-    shape_signature: green_bold
-    shape_string: green
-    shape_string_interpolation: cyan_bold
-    shape_datetime: cyan_bold
-    shape_list: cyan_bold
-    shape_table: blue_bold
-    shape_record: cyan_bold
-    shape_block: blue_bold
-    shape_filepath: cyan
-    shape_globpattern: cyan_bold
-    shape_variable: purple
-    shape_flag: blue_bold
-    shape_custom: green
-    shape_nothing: light_cyan
+  # shapes are used to change the cli syntax highlighting
+  shape_garbage: { fg: "#FFFFFF" bg: "#FF0000" attr: b}
+  shape_binary: purple_bold
+  shape_bool: light_cyan
+  shape_int: purple_bold
+  shape_float: purple_bold
+  shape_range: yellow_bold
+  shape_internalcall: cyan_bold
+  shape_external: cyan
+  shape_externalarg: green_bold
+  shape_literal: blue
+  shape_operator: yellow
+  shape_signature: green_bold
+  shape_string: green
+  shape_string_interpolation: cyan_bold
+  shape_datetime: cyan_bold
+  shape_list: cyan_bold
+  shape_table: blue_bold
+  shape_record: cyan_bold
+  shape_block: blue_bold
+  shape_filepath: cyan
+  shape_globpattern: cyan_bold
+  shape_variable: purple
+  shape_flag: blue_bold
+  shape_custom: green
+  shape_nothing: light_cyan
 }
 
 # External completer example
 # let carapace_completer = {|spans| 
-#     carapace $spans.0 nushell $spans | from json
+#   carapace $spans.0 nushell $spans | from json
 # }
 
 
 # The default config record. This is where much of your global configuration is setup.
-let-env config = {
+$env.config = {
   show_banner: false
-  color_config: $dark_theme # $light_theme
-  footer_mode: "25" # always, never, number_of_rows, auto
-  float_precision: 2
-  use_grid_icons: true
-  use_ansi_coloring: true
-  edit_mode: emacs # emacs, vi
-  # enables terminal markers and a workaround to arrow keys stop working issue
-  shell_integration: true
-  cd: {
-    # allows `cd s/o/f` to expand to `cd some/other/folder`
-    abbreviations: true
+
+  ls: {
+    use_ls_colors: true # use the LS_COLORS environment variable to colorize output
+    clickable_links: true # enable or disable clickable links. Your terminal has to support links.
   }
+
   rm: {
-    # always act as if -t was given. Can be overridden with -p  
-    always_trash: false
+    always_trash: false # always act as if -t was given. Can be overridden with -p
   }
-  filesize: {
-    # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)  
-    metric: true
-    # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, zb, zib, auto  
-    format: "auto" 
-  }
+
   table: {
-    # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
-    mode: rounded
-    # "always" show indexes, "never" show indexes, "auto" = show indexes when a table has "index" column
-    index_mode: auto
+    mode: rounded # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
+    index_mode: always # "always" show indexes, "never" show indexes, "auto" = show indexes when a table has "index" column
+    show_empty: true # show 'empty list' and 'empty record' placeholders for command output
+    padding: { left: 1, right: 1 } # a left right padding of each column in a table
     trim: {
       methodology: wrapping # wrapping or truncating
       wrapping_try_keep_words: true # A strategy used by the 'wrapping' methodology
       truncating_suffix: "..." # A suffix used by the 'truncating' methodology
     }
+    header_on_separator: false # show header text on separator/border line
+    # abbreviated_row_count: 10 # limit data rows from top and bottom after reaching a set point
   }
-  ls: {
-    use_ls_colors: true # use the LS_COLORS environment variable to colorize output
-    clickable_links: true # enable or disable clickable links. Your terminal has to support links.
+
+  error_style: "fancy" # "fancy" or "plain" for screen reader-friendly error messages
+
+  # datetime_format determines what a datetime rendered in the shell would look like.
+  # Behavior without this configuration point will be to "humanize" the datetime display,
+  # showing something like "a day ago."
+  datetime_format: {
+    # normal: '%a, %d %b %Y %H:%M:%S %z'  # shows up in displays of variables or other datetime's outside of tables
+    # table: '%m/%d/%y %I:%M:%S%p'      # generally shows up in tabular outputs such as ls. commenting this out will change it to the default human readable datetime format
   }
-  # buffer_editor: "emacs" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
+
+  explore: {
+    status_bar_background: {f g: "#1D1F21", bg: "#C4C9C6" },
+    command_bar_text: { fg: "#C4C9C6" },
+    highlight: { fg: "black", bg: "yellow" },
+    status: {
+      error: { fg: "white", bg: "red" },
+      warn: {}
+      info: {}
+    },
+    table: {
+      split_line: { fg: "#404040" },
+      selected_cell: { bg: light_blue },
+      selected_row: {},
+      selected_column: {},
+    },
+  }
+
   history: {
-    max_size: 10000 # Session has to be reloaded for this to take effect
+    max_size: 100_000 # Session has to be reloaded for this to take effect
     sync_on_enter: true # Enable to share history between multiple sessions, else you have to close the session to write history to file
     file_format: "plaintext" # "sqlite" or "plaintext"
+    isolation: false # only available with sqlite file_format. true enables history isolation, false disables it. true will allow the history to be isolated to the current session using up/down arrows. false will allow the history to be shared across all sessions.
   }
-  # disable_table_indexes: false # set to true to remove the index column from tables
+
   completions: {
     case_sensitive: false # set to true to enable case-sensitive completions
     quick: true  # set this to false to prevent auto-selecting completions when only one remains
     partial: true  # set this to false to prevent partial filling of the prompt
     algorithm: "prefix"  # prefix or fuzzy
     external: {
-      enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up my be very slow
+      enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up may be very slow
       max_results: 100 # setting it lower can improve completion performance at the cost of omitting some options
       completer: null # check 'carapace_completer' above as an example
     }
   }
-  hooks: {
-    pre_prompt: [{
-      $nothing  # replace with source code to run before the prompt is shown
-    }]
-    pre_execution: [{
-      $nothing  # replace with source code to run before the repl input is run
-    }]
-    env_change: {
-      PWD: [{|before, after|
-        $nothing  # replace with source code to run if the PWD environment is different since the last repl input
-      }]
-    }
+
+  filesize: {
+    metric: false # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
+    format: "auto" # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, auto
   }
+
+  cursor_shape: {
+    emacs: blink_line # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (line is the default)
+    vi_insert: block # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (block is the default)
+    vi_normal: underscore # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (underscore is the default)
+  }
+
+  color_config: $dark_theme # if you want a more interesting theme, you can replace the empty record with `$dark_theme`, `$light_theme` or another custom record
+  use_grid_icons: true  
+  footer_mode: "25" # always, never, number_of_rows, auto
+  float_precision: 2 # the precision for displaying floats in tables
+  buffer_editor: "" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
+  use_ansi_coloring: true
+  bracketed_paste: true # enable bracketed paste, currently useless on windows
+  edit_mode: emacs # emacs, vi
+  shell_integration: false # enables terminal shell integration. Off by default, as some terminals have issues with this.
+  render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
+  use_kitty_protocol: false # enables keyboard enhancement protocol implemented by kitty console, only if your terminal support this.
+
+  hooks: {
+    pre_prompt: [{ null }] # run before the prompt is shown
+    pre_execution: [{ null }] # run before the repl input is run
+    env_change: {
+      PWD: [{|before, after| null }] # run if the PWD environment is different since the last repl input
+    }
+    display_output: "if (term size).columns >= 100 { table -e } else { table }" # run to display the output of a pipeline
+    command_not_found: { null } # return an error message when a command is not found
+  }
+
   menus: [
-      # Configuration for default nushell menus
-      # Note the lack of souce parameter
-      {
-        name: completion_menu
-        only_buffer_difference: false
-        marker: "| "
-        type: {
-            layout: columnar
-            columns: 4
-            col_width: 20   # Optional value. If missing all the screen width is used to calculate column width
-            col_padding: 2
-        }
-        style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
-        }
+    # Configuration for default nushell menus
+    # Note the lack of source parameter
+    {
+      name: completion_menu
+      only_buffer_difference: false
+      marker: "| "
+      type: {
+        layout: columnar
+        columns: 4
+        col_width: 20   # Optional value. If missing all the screen width is used to calculate column width
+        col_padding: 2
       }
-      {
-        name: history_menu
-        only_buffer_difference: true
-        marker: "? "
-        type: {
-            layout: list
-            page_size: 10
-        }
-        style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
-        }
+      style: {
+        text: green
+        selected_text: green_reverse
+        description_text: yellow
       }
-      {
-        name: help_menu
-        only_buffer_difference: true
-        marker: "? "
-        type: {
-            layout: description
-            columns: 4
-            col_width: 20   # Optional value. If missing all the screen width is used to calculate column width
-            col_padding: 2
-            selection_rows: 4
-            description_rows: 10
-        }
-        style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
-        }
+    }
+    {
+      name: history_menu
+      only_buffer_difference: true
+      marker: "? "
+      type: {
+        layout: list
+        page_size: 10
       }
-      # Example of extra menus created using a nushell source
-      # Use the source field to create a list of records that populates
-      # the menu
-      {
-        name: commands_menu
-        only_buffer_difference: false
-        marker: "# "
-        type: {
-            layout: columnar
-            columns: 4
-            col_width: 20
-            col_padding: 2
-        }
-        style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
-        }
-        source: { |buffer, position|
-            $nu.scope.commands
-            | where command =~ $buffer
-            | each { |it| {value: $it.command description: $it.usage} }
-        }
+      style: {
+        text: green
+        selected_text: green_reverse
+        description_text: yellow
       }
-      {
-        name: vars_menu
-        only_buffer_difference: true
-        marker: "# "
-        type: {
-            layout: list
-            page_size: 10
-        }
-        style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
-        }
-        source: { |buffer, position|
-            $nu.scope.vars
-            | where name =~ $buffer
-            | sort-by name
-            | each { |it| {value: $it.name description: $it.type} }
-        }
+    }
+    {
+      name: help_menu
+      only_buffer_difference: true
+      marker: "? "
+      type: {
+        layout: description
+        columns: 4
+        col_width: 20   # Optional value. If missing all the screen width is used to calculate column width
+        col_padding: 2
+        selection_rows: 4
+        description_rows: 10
       }
-      {
-        name: commands_with_description
-        only_buffer_difference: true
-        marker: "# "
-        type: {
-            layout: description
-            columns: 4
-            col_width: 20
-            col_padding: 2
-            selection_rows: 4
-            description_rows: 10
-        }
-        style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
-        }
-        source: { |buffer, position|
-            $nu.scope.commands
-            | where command =~ $buffer
-            | each { |it| {value: $it.command description: $it.usage} }
-        }
+      style: {
+        text: green
+        selected_text: green_reverse
+        description_text: yellow
       }
+    }
   ]
+
   keybindings: [
     {
       name: completion_menu
       modifier: none
       keycode: tab
-      mode: emacs # Options: emacs vi_normal vi_insert
+      mode: [emacs vi_normal vi_insert]
       event: {
         until: [
           { send: menu name: completion_menu }
           { send: menunext }
+          { edit: complete }
         ]
       }
-    }
-    {
-      name: completion_previous
-      modifier: shift
-      keycode: backtab
-      mode: [emacs, vi_normal, vi_insert] # Note: You can add the same keybinding to all modes by using a list
-      event: { send: menuprevious }
     }
     {
       name: history_menu
       modifier: control
       keycode: char_r
-      mode: emacs
+      mode: [emacs, vi_insert, vi_normal]
       event: { send: menu name: history_menu }
     }
     {
-      name: next_page
+      name: help_menu
+      modifier: none
+      keycode: f1
+      mode: [emacs, vi_insert, vi_normal]
+      event: { send: menu name: help_menu }
+    }
+    {
+      name: completion_previous_menu
+      modifier: shift
+      keycode: backtab
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: menuprevious }
+    }
+    {
+      name: next_page_menu
       modifier: control
       keycode: char_x
       mode: emacs
       event: { send: menupagenext }
     }
     {
-      name: undo_or_previous_page
+      name: undo_or_previous_page_menu
       modifier: control
       keycode: char_z
       mode: emacs
@@ -342,300 +268,440 @@ let-env config = {
           { send: menupageprevious }
           { edit: undo }
         ]
-       }
-    }
-    {
-      name: yank
-      modifier: control
-      keycode: char_y
-      mode: emacs
-      event: {
-        until: [
-          {edit: pastecutbufferafter}
-        ]
       }
     }
     {
-      name: unix-line-discard
+      name: escape
+      modifier: none
+      keycode: escape
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: esc }  # NOTE: does not appear to work
+    }
+    {
+      name: cancel_command
       modifier: control
-      keycode: char_u
+      keycode: char_c
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: ctrlc }
+    }
+    {
+      name: quit_shell
+      modifier: control
+      keycode: char_d
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: ctrld }
+    }
+    {
+      name: clear_screen
+      modifier: control
+      keycode: char_l
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: clearscreen }
+    }
+    {
+      name: search_history
+      modifier: control
+      keycode: char_q
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: searchhistory }
+    }
+    {
+      name: open_command_editor
+      modifier: control
+      keycode: char_o
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: openeditor }
+    }
+    {
+      name: move_up
+      modifier: none
+      keycode: up
       mode: [emacs, vi_normal, vi_insert]
       event: {
         until: [
-          {edit: cutfromlinestart}
+          {send: menuup}
+          {send: up}
         ]
       }
     }
     {
-      name: kill-line
-      modifier: control
-      keycode: char_k
+      name: move_down
+      modifier: none
+      keycode: down
       mode: [emacs, vi_normal, vi_insert]
       event: {
         until: [
-          {edit: cuttolineend}
+          {send: menudown}
+          {send: down}
         ]
       }
     }
-    # Keybindings used to trigger the user defined menus
     {
-      name: commands_menu
+      name: move_left
+      modifier: none
+      keycode: left
+      mode: [emacs, vi_normal, vi_insert]
+      event: {
+        until: [
+          {send: menuleft}
+          {send: left}
+        ]
+      }
+    }
+    {
+      name: move_right_or_take_history_hint
+      modifier: none
+      keycode: right
+      mode: [emacs, vi_normal, vi_insert]
+      event: {
+        until: [
+          {send: historyhintcomplete}
+          {send: menuright}
+          {send: right}
+        ]
+      }
+    }
+    {
+      name: move_one_word_left
+      modifier: control
+      keycode: left
+      mode: [emacs, vi_normal, vi_insert]
+      event: {edit: movewordleft}
+    }
+    {
+      name: move_one_word_right_or_take_history_hint
+      modifier: control
+      keycode: right
+      mode: [emacs, vi_normal, vi_insert]
+      event: {
+        until: [
+          {send: historyhintwordcomplete}
+          {edit: movewordright}
+        ]
+      }
+    }
+    {
+      name: move_to_line_start
+      modifier: none
+      keycode: home
+      mode: [emacs, vi_normal, vi_insert]
+      event: {edit: movetolinestart}
+    }
+    {
+      name: move_to_line_start
+      modifier: control
+      keycode: char_a
+      mode: [emacs, vi_normal, vi_insert]
+      event: {edit: movetolinestart}
+    }
+    {
+      name: move_to_line_end_or_take_history_hint
+      modifier: none
+      keycode: end
+      mode: [emacs, vi_normal, vi_insert]
+      event: {
+        until: [
+          {send: historyhintcomplete}
+          {edit: movetolineend}
+        ]
+      }
+    }
+    {
+      name: move_to_line_end_or_take_history_hint
+      modifier: control
+      keycode: char_e
+      mode: [emacs, vi_normal, vi_insert]
+      event: {
+        until: [
+          {send: historyhintcomplete}
+          {edit: movetolineend}
+        ]
+      }
+    }
+    {
+      name: move_to_line_start
+      modifier: control
+      keycode: home
+      mode: [emacs, vi_normal, vi_insert]
+      event: {edit: movetolinestart}
+    }
+    {
+      name: move_to_line_end
+      modifier: control
+      keycode: end
+      mode: [emacs, vi_normal, vi_insert]
+      event: {edit: movetolineend}
+    }
+    {
+      name: move_up
+      modifier: control
+      keycode: char_p
+      mode: [emacs, vi_normal, vi_insert]
+      event: {
+        until: [
+          {send: menuup}
+          {send: up}
+        ]
+      }
+    }
+    {
+      name: move_down
       modifier: control
       keycode: char_t
       mode: [emacs, vi_normal, vi_insert]
-      event: { send: menu name: commands_menu }
+      event: {
+        until: [
+          {send: menudown}
+          {send: down}
+        ]
+      }
     }
     {
-      name: vars_menu
-      modifier: alt
-      keycode: char_o
-      mode: [emacs, vi_normal, vi_insert]
-      event: { send: menu name: vars_menu }
+      name: delete_one_character_backward
+      modifier: none
+      keycode: backspace
+      mode: [emacs, vi_insert]
+      event: {edit: backspace}
     }
     {
-      name: commands_with_description
+      name: delete_one_word_backward
       modifier: control
-      keycode: char_s
-      mode: [emacs, vi_normal, vi_insert]
-      event: { send: menu name: commands_with_description }
+      keycode: backspace
+      mode: [emacs, vi_insert]
+      event: {edit: backspaceword}
+    }
+    {
+      name: delete_one_character_forward
+      modifier: none
+      keycode: delete
+      mode: [emacs, vi_insert]
+      event: {edit: delete}
+    }
+    {
+      name: delete_one_character_forward
+      modifier: control
+      keycode: delete
+      mode: [emacs, vi_insert]
+      event: {edit: delete}
+    }
+    {
+      name: delete_one_character_forward
+      modifier: control
+      keycode: char_h
+      mode: [emacs, vi_insert]
+      event: {edit: backspace}
+    }
+    {
+      name: delete_one_word_backward
+      modifier: control
+      keycode: char_w
+      mode: [emacs, vi_insert]
+      event: {edit: backspaceword}
+    }
+    {
+      name: move_left
+      modifier: none
+      keycode: backspace
+      mode: vi_normal
+      event: {edit: moveleft}
+    }
+    {
+      name: newline_or_run_command
+      modifier: none
+      keycode: enter
+      mode: emacs
+      event: {send: enter}
+    }
+    {
+      name: move_left
+      modifier: control
+      keycode: char_b
+      mode: emacs
+      event: {
+        until: [
+          {send: menuleft}
+          {send: left}
+        ]
+      }
+    }
+    {
+      name: move_right_or_take_history_hint
+      modifier: control
+      keycode: char_f
+      mode: emacs
+      event: {
+        until: [
+          {send: historyhintcomplete}
+          {send: menuright}
+          {send: right}
+        ]
+      }
+    }
+    {
+      name: redo_change
+      modifier: control
+      keycode: char_g
+      mode: emacs
+      event: {edit: redo}
+    }
+    {
+      name: undo_change
+      modifier: control
+      keycode: char_z
+      mode: emacs
+      event: {edit: undo}
+    }
+    {
+      name: paste_before
+      modifier: control
+      keycode: char_y
+      mode: emacs
+      event: {edit: pastecutbufferbefore}
+    }
+    {
+      name: cut_word_left
+      modifier: control
+      keycode: char_w
+      mode: emacs
+      event: {edit: cutwordleft}
+    }
+    {
+      name: cut_line_to_end
+      modifier: control
+      keycode: char_k
+      mode: emacs
+      event: {edit: cuttoend}
+    }
+    {
+      name: cut_line_from_start
+      modifier: control
+      keycode: char_u
+      mode: emacs
+      event: {edit: cutfromstart}
+    }
+    {
+      name: swap_graphemes
+      modifier: control
+      keycode: char_t
+      mode: emacs
+      event: {edit: swapgraphemes}
+    }
+    {
+      name: move_one_word_left
+      modifier: alt
+      keycode: left
+      mode: emacs
+      event: {edit: movewordleft}
+    }
+    {
+      name: move_one_word_right_or_take_history_hint
+      modifier: alt
+      keycode: right
+      mode: emacs
+      event: {
+        until: [
+          {send: historyhintwordcomplete}
+          {edit: movewordright}
+        ]
+      }
+    }
+    {
+      name: move_one_word_left
+      modifier: alt
+      keycode: char_b
+      mode: emacs
+      event: {edit: movewordleft}
+    }
+    {
+      name: move_one_word_right_or_take_history_hint
+      modifier: alt
+      keycode: char_f
+      mode: emacs
+      event: {
+        until: [
+          {send: historyhintwordcomplete}
+          {edit: movewordright}
+        ]
+      }
+    }
+    {
+      name: delete_one_word_forward
+      modifier: alt
+      keycode: delete
+      mode: emacs
+      event: {edit: deleteword}
+    }
+    {
+      name: delete_one_word_backward
+      modifier: alt
+      keycode: backspace
+      mode: emacs
+      event: {edit: backspaceword}
+    }
+    {
+      name: delete_one_word_backward
+      modifier: alt
+      keycode: char_m
+      mode: emacs
+      event: {edit: backspaceword}
+    }
+    {
+      name: cut_word_to_right
+      modifier: alt
+      keycode: char_d
+      mode: emacs
+      event: {edit: cutwordright}
+    }
+    {
+      name: upper_case_word
+      modifier: alt
+      keycode: char_u
+      mode: emacs
+      event: {edit: uppercaseword}
+    }
+    {
+      name: lower_case_word
+      modifier: alt
+      keycode: char_l
+      mode: emacs
+      event: {edit: lowercaseword}
+    }
+    {
+      name: capitalize_char
+      modifier: alt
+      keycode: char_c
+      mode: emacs
+      event: {edit: capitalizechar}
     }
   ]
 }
 
 
-# Nushell Config File
-
 module completions {
-  # Custom completions for external commands (those outside of Nushell)
-  # Each completions has two parts: the form of the external command, including its flags and parameters
-  # and a helper command that knows how to complete values for those flags and parameters
-
-  # Complete npm package names + descriptions
-  # TODO: add version to description
-  # def "nu-complete pn add" [context: string] {
-  #   $context | split words | last 
-  #     | http get $"https://api.npms.io/v2/search?q=($in)"
-  #     | get results 
-  #     | get package 
-  #     | select -i name description version 
-  #     | update description {|item| $"v[($item.version)] ($item.description)" } 
-  #     | rename value description
-  # }
-
-  # export extern "pnpm add" [
-  #   pkg?: string@"nu-complete pn add"
-  #   --save-dev (-D)         # Install the specified package(s) as devDependencies.
-  #   --save-prod (-P)        # Install the specified package(s) as regular dependencies.
-  #   --save-optional (-O)    # Install the specified package(s) as optionalDependencies.
-  #   --save-exact (-E)       # Saved dependencies will be configured with an exact version rather than using pnpm's default semver range operator.
-  #   --save-peer             # Add one or more packages to peerDependencies and install them as dev dependencies.
-  #   --global (-g)           # Install the specified package(s) globally.
-  #   --workspace             # Only adds the new dependency if it is found in the workspace.
-  #   --filter: string
-  # ]
-
-  # export extern "pn i" [
-  #   --force                     # Force reinstall dependencies: refetch packages modified in store, recreate a lockfile and/or modules directory created by a non-compatible version of pnpm. Install all optionalDependencies even they don't satisfy the current environment(cpu, os, arch).
-  #   --offline                   # If true, pnpm will use only packages already available in the store. If a package won't be found locally, the installation will fail.
-  #   --prefer-offline            # If true, staleness checks for cached data will be bypassed, but missing data will be requested from the server. To force full offline mode, use --offline.
-  #   --frozen-lockfile           #	pnpm doesn't generate a lockfile and fails to install if the lockfile is out of sync with the manifest / an update is needed or no lockfile is present
-  #   --lockfile-only             #	Only updates pnpm-lock.yaml and package.json. Nothing gets written to the node_modules directory.
-  #   --no-optional               # optionalDependencies are not installed.
-  #   --prod (-P)                 # pnpm will not install any package listed in devDependencies and will remove those insofar they were already installed, if the NODE_ENV environment variable is set to production. Use this flag to instruct pnpm to ignore NODE_ENV and take its production status from this flag instead.
-  #   --dev (-D)                  # Only devDependencies are installed and dependencies are removed insofar they were already installed, regardless of the NODE_ENV.
-  # ]
-
   def "nu-complete cargo add" [context: string] {
-    $context | split words | last | 
-      http get https://crates.io/api/v1/crates?page=1&per_page=15&q=($in) 
-      | get crates 
-      | select -i name description newest_version
-      | update description {|item| $"v[($item.newest_version)] ($item.description)" } 
-      | rename value description
+  $context | split words | last | 
+    http get https://crates.io/api/v1/crates?page=1&per_page=15&q=($in) 
+    | get crates 
+    | select -i name description newest_version
+    | update description {|item| $"v[($item.newest_version)] ($item.description)" } 
+    | rename value description
   }
 
   # TODO: 
   # https://github.com/nushell/awesome-nu
   # https://github.com/nushell/nu_scripts/blob/main/custom-completions/cargo/cargo-completions.nu
-  export extern "cargo add" [
-    crate?: string@"nu-complete cargo add" 
-                            # Reference to a package to add as a dependency
-                            # You can reference a package by:
-                            # - `<name>`, like `cargo add serde` (latest version will be used)
-                            # - `<name>@<version-req>`, like `cargo add serde@1` or `cargo add serde@=1.0.38`
-    --no-default-features   # Disable the default features
-    --default-features      # Re-enable the default features
-    --features(-F):string   # Space or comma separated list of features to activate
-    --optional              # Mark the dependency as optional.
-                            # The package name will be exposed as feature of your crate.
-    --verbose(-v)           # Use verbose output (-vv very verbose/build.rs output)
-    --no-optional           # Mark the dependency as required.
-                            # The package will be removed from your features.
-    --color: string         # Coloring: auto, always, never
-    --rename: string        # Rename the dependency
-                            # Example uses:
-                            # - Depending on multiple versions of a crate
-                            # - Depend on crates with the same name from different registries
-    --frozen                # Require Cargo.lock and cache are up to date
-    --manifest-path: string # Path to Cargo.toml
-    --locked                # Require Cargo.lock is up to date
-    --package(-p): string   # Package to modify
-    --offline               # Run without accessing the network
-    --quiet(-q)             # Do not print cargo log messages
-    --config: string        # Override a configuration value
-    --dry-run               # Don't actually write the manifest
-    -Z: string              # Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
-    --help(-h)              # Print help information (use `-h` for a summary)
-    --path: string          # Filesystem path to local crate to add
-    --git: string           # Git repository location.
-                            # Without any other information, cargo will use latest commit on the main branch.
-    --branch: string        # Git branch to download the crate from
-    --tag: string           # Git tag to download the crate from
-    --rev: string           # Git reference to download the crate from. 
-                            # This is the catch all, handling hashes to named references in remote repositories.
-    --registry: string      # Package registry for this dependency
-    --dev                   # Add as development dependency. 
-                            # Dev-dependencies are not used when compiling a package for building, but are used for compiling tests, examples, and benchmarks. 
-                            # These dependencies are not propagated to other packages which depend on this package.
-    --build                 # Add as build dependency. 
-                            # Build-dependencies are the only dependencies available for use by build scripts (`build.rs` files).
-    --target: string        # Add as dependency to the given target platform
-  ]
 
   # This is a simplified version of completions for git branches and git remotes
   def "nu-complete git branches" [] {
-    ^git branch | lines | each { |line| $line | str replace '[\*\+] ' '' | str trim }
+  ^git branch | lines | each { |line| $line | str replace '[\*\+] ' '' | str trim }
   }
 
   def "nu-complete git remotes" [] {
-    ^git remote | lines | each { |line| $line | str trim }
+  ^git remote | lines | each { |line| $line | str trim }
   }
-
-  # Download objects and refs from another repository
-  export extern "git fetch" [
-    repository?: string@"nu-complete git remotes" # name of the repository to fetch
-    branch?: string@"nu-complete git branches"    # name of the branch to fetch
-    --all                                         # Fetch all remotes
-    --append(-a)                                  # Append ref names and object names to .git/FETCH_HEAD
-    --atomic                                      # Use an atomic transaction to update local refs.
-    --depth: int                                  # Limit fetching to n commits from the tip
-    --deepen: int                                 # Limit fetching to n commits from the current shallow boundary
-    --shallow-since: string                       # Deepen or shorten the history by date
-    --shallow-exclude: string                     # Deepen or shorten the history by branch/tag
-    --unshallow                                   # Fetch all available history
-    --update-shallow                              # Update .git/shallow to accept new refs
-    --negotiation-tip: string                     # Specify which commit/glob to report while fetching
-    --negotiate-only                              # Do not fetch, only print common ancestors
-    --dry-run                                     # Show what would be done
-    --write-fetch-head                            # Write fetched refs in FETCH_HEAD (default)
-    --no-write-fetch-head                         # Do not write FETCH_HEAD
-    --force(-f)                                   # Always update the local branch
-    --keep(-k)                                    # Keep dowloaded pack
-    --multiple                                    # Allow several arguments to be specified
-    --auto-maintenance                            # Run 'git maintenance run --auto' at the end (default)
-    --no-auto-maintenance                         # Don't run 'git maintenance' at the end
-    --auto-gc                                     # Run 'git maintenance run --auto' at the end (default)
-    --no-auto-gc                                  # Don't run 'git maintenance' at the end
-    --write-commit-graph                          # Write a commit-graph after fetching
-    --no-write-commit-graph                       # Don't write a commit-graph after fetching
-    --prefetch                                    # Place all refs into the refs/prefetch/ namespace
-    --prune(-p)                                   # Remove obsolete remote-tracking references
-    --prune-tags(-P)                              # Remove any local tags that do not exist on the remote
-    --no-tags(-n)                                 # Disable automatic tag following
-    --refmap: string                              # Use this refspec to map the refs to remote-tracking branches
-    --tags(-t)                                    # Fetch all tags
-    --recurse-submodules: string                  # Fetch new commits of populated submodules (yes/on-demand/no)
-    --jobs(-j): int                               # Number of parallel children
-    --no-recurse-submodules                       # Disable recursive fetching of submodules
-    --set-upstream                                # Add upstream (tracking) reference
-    --submodule-prefix: string                    # Prepend to paths printed in informative messages
-    --upload-pack: string                         # Non-default path for remote command
-    --quiet(-q)                                   # Silence internally used git commands
-    --verbose(-v)                                 # Be verbose
-    --progress                                    # Report progress on stderr
-    --server-option(-o): string                   # Pass options for the server to handle
-    --show-forced-updates                         # Check if a branch is force-updated
-    --no-show-forced-updates                      # Don't check if a branch is force-updated
-    -4                                            # Use IPv4 addresses, ignore IPv6 addresses
-    -6                                            # Use IPv6 addresses, ignore IPv4 addresses
-    --help                                        # Display this help message
-  ]
-
-  # Check out git branches and files
-  export extern "git checkout" [
-    ...targets: string@"nu-complete git branches"   # name of the branch or files to checkout
-    --conflict: string                              # conflict style (merge or diff3)
-    --detach(-d)                                    # detach HEAD at named commit
-    --force(-f)                                     # force checkout (throw away local modifications)
-    --guess                                         # second guess 'git checkout <no-such-branch>' (default)
-    --ignore-other-worktrees                        # do not check if another worktree is holding the given ref
-    --ignore-skip-worktree-bits                     # do not limit pathspecs to sparse entries only
-    --merge(-m)                                     # perform a 3-way merge with the new branch
-    --orphan: string                                # new unparented branch
-    --ours(-2)                                      # checkout our version for unmerged files
-    --overlay                                       # use overlay mode (default)
-    --overwrite-ignore                              # update ignored files (default)
-    --patch(-p)                                     # select hunks interactively
-    --pathspec-from-file: string                    # read pathspec from file
-    --progress                                      # force progress reporting
-    --quiet(-q)                                     # suppress progress reporting
-    --recurse-submodules: string                    # control recursive updating of submodules
-    --theirs(-3)                                    # checkout their version for unmerged files
-    --track(-t)                                     # set upstream info for new branch
-    -b: string                                      # create and checkout a new branch
-    -B: string                                      # create/reset and checkout a branch
-    -l                                              # create reflog for new branch
-    --help                                          # Display this help message
-  ]
-
-  # Push changes
-  export extern "git push" [
-    remote?: string@"nu-complete git remotes",      # the name of the remote
-    ...refs: string@"nu-complete git branches"      # the branch / refspec
-    --all                                           # push all refs
-    --atomic                                        # request atomic transaction on remote side
-    --delete(-d)                                    # delete refs
-    --dry-run(-n)                                   # dry run
-    --exec: string                                  # receive pack program
-    --follow-tags                                   # push missing but relevant tags
-    --force-with-lease: string                      # require old value of ref to be at this value
-    --force(-f)                                     # force updates
-    --ipv4(-4)                                      # use IPv4 addresses only
-    --ipv6(-6)                                      # use IPv6 addresses only
-    --mirror                                        # mirror all refs
-    --no-verify                                     # bypass pre-push hook
-    --porcelain                                     # machine-readable output
-    --progress                                      # force progress reporting
-    --prune                                         # prune locally removed refs
-    --push-option(-o): string                       # option to transmit
-    --quiet(-q)                                     # be more quiet
-    --receive-pack: string                          # receive pack program
-    --recurse-submodules: string                    # control recursive pushing of submodules
-    --repo: string                                  # repository
-    --set-upstream(-u)                              # set upstream for git pull/status
-    --signed: string                                # GPG sign the push
-    --tags                                          # push tags (can't be used with --all or --mirror)
-    --thin                                          # use thin pack
-    --verbose(-v)                                   # be more verbose
-    --help                                          # Display this help message
-  ]
 }
 
-# def "cargoe search" [ query: string, --limit=10] { 
-#   ^cargo search $query --limit $limit
-#   | lines 
-#   | each { 
-#       |line| if ($line | str contains "#") { 
-#           $line | parse --regex '(?P<name>.+) = "(?P<version>.+)" +# (?P<description>.+)' 
-#       } else { 
-#           $line | parse --regex '(?P<name>.+) = "(?P<version>.+)"' 
-#       } 
-#   } 
-#   | flatten
-# }
-# Get just the extern definitions without the custom completion commands
-use completions *
-
-source ~/.oh-my-posh.nu
-source ~/.cache/zoxide/.zoxide.nu
+source ./prompt.nu
+# source ~/.oh-my-posh.nu
+source ~/.zoxide.nu
 # source ~/.cache/starship/init.nu
