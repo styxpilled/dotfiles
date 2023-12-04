@@ -17,8 +17,9 @@ def conventionalcommits [] {
 def zc [
     dir: string     # The directory name
     ] {
-    __zoxide_z $dir
+    cd (zoxide query -- $dir)
     code .
+    exit
 }
 
 # Open a directory in File Explorer (defaults to .)
@@ -32,7 +33,8 @@ def browse [
 def vsc [
     dir: string = "."   # The directory or file name (defaults to .)
     ] {
-    code $dir
+    cd (zoxide query -- $dir)
+    code .
     exit
 }
 
@@ -77,16 +79,19 @@ def git-log [
     | split column " // " msg commit author date
     | each {|row| update date ($row.date | into datetime)}
     | each {|row| update author ($row.author | split row "@" | $in.0)}
-    | each {|row| insert type (
+    | each {|row|
+      insert type (
           if $row.msg =~ '.+: .+' {
-              if $row.msg =~ '.+\(.+\): .+' {
-                  $row.msg | parse "{type}({scope}): {message}"
-              } else {
-                  $row.msg | parse "{type}: {message}"
-              }
+            if $row.msg =~ '.+\(.+\): .+' {
+              $row.msg | parse "{type}({scope}): {message}"
+            } else {
+              $row.msg | parse "{type}: {message}"
+            }
           } else {
-              $row.msg
-          })}
+            $row.msg
+          }
+        )  
+      }
     | reject msg
     | move type --after commit
     | flatten -a)
@@ -113,12 +118,16 @@ def printhistory [
 
 # Convert videos to mp4
 def "file convert video" [
-    input: string
-    --output (-o): string = ""
-    --format (-f): string = "mp4"
-    ] {
-    let newname = ($input | str substring 0..($input | str index-of "." -e))
-    ffmpeg -hide_banner -hwaccel cuda -i $input $"($newname).($format)" 
+  input: string
+  --output (-o): string = ""
+  --format (-f): string = "mp4"
+  ] {
+  let newname = if $output == "" {
+    ($input | str substring 0..($input | str index-of "." -e))
+  } else {
+    $output
+  }
+  ffmpeg -hide_banner -hwaccel cuda -i $input $"($newname).($format)" 
 }
 
 # Extract audio stream from video
@@ -143,22 +152,22 @@ def "file convert gif" [
 
 # Convert pdfs to images
 def "file convert pdf" [
-    input: string
-    --output (-o): string = ""
-    --format (-f): string = "jpg"
-    ] {
-      let newname = ($input | str substring [0 ($input | str index-of "." -e)])
-      print $newname $format
-    gswin64 -dNOPAUSE -dBATCH -r96 -sDEVICE=jpeg $"-sOutputFile=($newname).($format)" -dLastPage=1 $input
+  input: string
+  --output (-o): string = ""
+  --format (-f): string = "jpg"
+  ] {
+  let newname = ($input | str substring [0 ($input | str index-of "." -e)])
+  print $newname $format
+  gswin64 -dNOPAUSE -dBATCH -r96 -sDEVICE=jpeg $"-sOutputFile=($newname).($format)" -dLastPage=1 $input
 }
 
 # Get the weather forecast
 def wtw [
-    city: string = ""           # The city you want to look up (defaults to your current city)
-    --format (-f): int = -1     # The one-line format (defaults to no format)
-    ] {
-    let options =  if $format != -1 { $"&format=($format)" }
-    curl $"wttr.in/($city)?F($options)"
+  city: string = ""           # The city you want to look up (defaults to your current city)
+  --format (-f): int = -1     # The one-line format (defaults to no format)
+  ] {
+  let options =  if $format != -1 { $"&format=($format)" }
+  curl $"wttr.in/($city)?F($options)"
 }
 
 # Get your public IPv4 address
@@ -265,6 +274,18 @@ def "compose down" [] {
   docker compose -f "docker-compose.yml" down
 }
 
+def "prompt confirmation" [
+    default: bool = true,
+    message: string = "Are you satisfied?"
+    ] {
+    let can_proceed = (input $"($message) y/N ")
+    if (($can_proceed | str downcase) == "y") {
+      return true
+    } else {
+      return false
+    }
+}
+
 # Reminder on how to ammend commit date
 def "h2 git date" [
     time: duration = 0day   # Amount of time to shift from date now
@@ -282,8 +303,8 @@ def "h2 git date" [
         git commit --amend --no-edit --date $"($amendtime)"
       } else {
         print $"git commit --amend --no-edit --date \"($amendtime)\""
-        let can_proceed = (input "Are you satisfied? Y/n ")
-        if ($can_proceed == "Y") {
+        let can_proceed = (prompt confirmation)
+        if (($can_proceed | str downcase) == "y") {
           git commit --amend --no-edit --date $"($amendtime)"
         } else {
           print "Aborting..."
