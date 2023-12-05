@@ -38,7 +38,7 @@ $env.FORCE_COLOR = 1
 # let-env PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 
 # STARSHIP
-oh-my-posh init nu --config ~\dotfiles\theme\styx.omp.json
+# oh-my-posh init nu --config ~\dotfiles\theme\styx.omp.json
 
 # Importing all the sub modules
 source ~/dotfiles/functions.nu

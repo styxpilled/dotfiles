@@ -7,6 +7,6 @@ $env.PROMPT_INDICATOR = (ansi --escape $PROMPT_COLOR) + "❯ "
 $env.PROMPT_COMMAND = {
   (ansi --escape $PROMPT_COLOR) + (pwd
   | str replace ($env.USERPROFILE) '~'
-  | str replace '\' '/'
+  | str replace -a '\' '/'
   ) + ' ' 
 }

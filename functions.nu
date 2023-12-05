@@ -243,28 +243,6 @@ def "init ts" [
     touch src/index.ts
 }
 
-# Initialize a styx-template sveltekit project (styxpilled/styx-template)
-def "init styxkit" [
-    name: string = ""   # The project name (will prompt if not provided)
-    ] {
-    let projectname = if $name == "" {
-        input $"(ansi green)\u{276f} "
-        | into string
-        } else $name
-    pnpm dlx degit styxpilled/styx-template $projectname
-}
-
-# Initialize a sveltekit project (svelte@latest)
-def "init sveltekit" [
-    name: string = ""   # The project name (will prompt if not provided)
-    ] {
-    let projectname = if $name == "" {
-        input $"(ansi green)\u{276f} "
-        | into string
-        } else $name
-    pnpm create svelte@latest $projectname
-}
-
 def "h2 psql" [] {
   # "psql -h localhost -p 5432 -U username default_database -W"
   print "psql -h <REMOTE HOST> -p <REMOTE PORT> -U <DB_USER> <DB_NAME> -W"
@@ -342,6 +320,18 @@ def "h2 git message" [
         }
       }
     }
+}
+
+def "h2 keybindings" [] {
+  print {
+    'F1': 'Help menu'
+    'CTRL + R': 'History menu'
+    'CTRL + C': 'Cancel command'
+    'CTRL + L': 'Clear screen'
+    'CTRL + Q': 'Interactive search history'
+    'CTRL + A': 'Move to line start'
+    'CTRL + E': 'Move to line end'
+  }
 }
 
 def "typeof getlicense" [] { ls -s '~/dotfiles/licenses' | $in.name }
