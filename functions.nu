@@ -271,7 +271,7 @@ def "h2 git date" [
     --manual (-m)           # Put the command in the clipboard instead of runnning it
     --confirm (-c)          # Skip confirmation screen
     ] {
-    let amendtime = (date now | if ($positive) { $in + $time } else { $in - $time } | date format $"%c")
+    let amendtime = (date now | if ($positive) { $in + $time } else { $in - $time } | format date $"%c")
 
     if ($manual) {
       print $"git commit --amend --no-edit --date \"($amendtime)\""

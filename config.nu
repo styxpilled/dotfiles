@@ -701,7 +701,4 @@ module completions {
   }
 }
 
-source ./prompt.nu
-# source ~/.oh-my-posh.nu
 source ~/.zoxide.nu
-# source ~/.cache/starship/init.nu
